@@ -8,7 +8,7 @@ class ExpenseManagement
 {
 private:
 	double acummulated;
-	Loan debt;
+	Loan* debt;
 	string start_date;
 	string finish_date;
 public:
