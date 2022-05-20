@@ -18,5 +18,6 @@ public:
 	double GetInterest();
 	double GetTotalDebt();
 	bool IsDebtFree(string date);
+	~ExpenseManagement();
 };
 
