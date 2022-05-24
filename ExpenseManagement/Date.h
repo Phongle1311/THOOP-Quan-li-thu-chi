@@ -19,6 +19,6 @@ public:
 	void Update(int day, int month, int year);
 
 	int Compare(Date& d);
-	static int MonthDiff(Date after, Date& before);
+	static int MonthDiff(Date after, Date before);
 };
 
