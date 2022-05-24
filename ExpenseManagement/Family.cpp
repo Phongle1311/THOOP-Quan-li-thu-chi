@@ -41,31 +41,25 @@ double Family::GetRemainingMoney() {
 void Family::HusbandSalaryInput() {
 	cout << "Enter husband salary: ";
 	cin >> husband_salary;
-	cout << "Enter successfully" << endl;
 }
 void Family::WifeSalaryInput() {
 	cout << "Enter wife salary: ";
 	cin >> wife_salary;
-	cout << "Enter successfully" << endl;
 }
 void Family::JointIncomeInput() {
 	cout << "Enter joint income: ";
 	cin >> joint_income;
-	cout << "Enter successfully" << endl;
 }
 void Family::OtherIncomeInput() {
 	cout << "Enter other income: ";
 	cin >> other_income;
-	cout << "Enter successfully" << endl;
 }
 void Family::ExpenseInput() {
 	cout << "Enter expense: ";
 	cin >> expense;
-	cout << "Enter successfully" << endl;
 }
 void Family::CostsIncurredInput() {
 	cout << "Enter cost costs incurred: ";
 	cin >> costs_incurred;
-	cout << "Enter successfully" << endl;
 }
 
