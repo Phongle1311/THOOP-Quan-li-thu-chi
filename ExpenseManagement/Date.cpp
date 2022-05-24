@@ -44,6 +44,6 @@ int Date::Compare(Date& d){
 	return 0;
 }
 
-int Date::MonthDiff(Date after, Date& before){
+int Date::MonthDiff(Date after, Date before){
 	return (after.year - before.year) * 12 + after.month - before.month;
 }
