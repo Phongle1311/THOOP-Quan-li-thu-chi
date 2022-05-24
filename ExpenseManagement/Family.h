@@ -1,13 +1,12 @@
 #pragma once
-#include "MyException.h"
 
 // Thu chi hằng tháng
 class Family
 {
 private:
 	// Thu nhập gồm: lương của vợ/chồng, thu nhập chung, thu nhập khác
-	double wife_salary;
 	double husband_salary;
+	double wife_salary;
 	double joint_income;
 	double other_income;
 
@@ -20,9 +19,12 @@ public:
 	Family(double wife_salary, double husband_salary, double joint_income, double other_income, double expense, double costs_incurred);
 	double GetTotalIncome();		// Tổng thu nhập
 	double GetTotalCost();			// Tổng chi phí
-	double GetDeposit();
+	double GetDeposit();			// Phần tiền gửi vào tiết kiệm
 	double GetRemainingMoney();		// Phần tiền còn dư
-	void IncomeInput();				// Nhập thu riêng
-	void CostInput();				// Nhập chi riêng
-	void Input();					// Nhập thu chi chung
+	void HusbandSalaryInput();		// Nhập lương chồng		
+	void WifeSalaryInput();			// Nhập lương vợ	
+	void JointIncomeInput();		// Nhập thu nhập chung	
+	void OtherIncomeInput();		// Nhập thu nhập khác	
+	void ExpenseInput();			// Nhập chi sinh hoạt	
+	void CostsIncurredInput();		// Nhập chi phí phát sinh	
 };

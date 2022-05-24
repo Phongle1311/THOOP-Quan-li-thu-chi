@@ -26,36 +26,46 @@ double Family::GetTotalCost() {
 double Family::GetDeposit() {
 	// chỉ dùng lương để trả nợ, dùng thu nhập khác để trả chi phí
 	// Nếu thu nhập khác không đủ trả chi phí thì dùng một phần lương để bù vào
-	//		tiền lương còn lại bao nhiêu thì gửi tiết kiệm
+	// tiền lương còn lại bao nhiêu thì gửi tiết kiệm
 	double salary = wife_salary + husband_salary;
-	double shortage = expense + costs_incurred - joint_income + other_income;
+	double shortage = expense + costs_incurred - joint_income - other_income;
 	if (shortage > 0)
 		return  salary - shortage;
 	return salary;
 }
 double Family::GetRemainingMoney() {
-	if (other_income > expense + costs_incurred)
-		return other_income - expense - costs_incurred;
+	if (other_income + joint_income > expense + costs_incurred)
+		return other_income + joint_income - expense - costs_incurred;
 	return 0;
 }
-
-void Family::IncomeInput() {
+void Family::HusbandSalaryInput() {
 	cout << "Enter husband salary: ";
 	cin >> husband_salary;
+	cout << "Enter successfully" << endl;
+}
+void Family::WifeSalaryInput() {
 	cout << "Enter wife salary: ";
 	cin >> wife_salary;
+	cout << "Enter successfully" << endl;
+}
+void Family::JointIncomeInput() {
 	cout << "Enter joint income: ";
 	cin >> joint_income;
+	cout << "Enter successfully" << endl;
+}
+void Family::OtherIncomeInput() {
 	cout << "Enter other income: ";
 	cin >> other_income;
+	cout << "Enter successfully" << endl;
 }
-void Family::CostInput() {
+void Family::ExpenseInput() {
 	cout << "Enter expense: ";
 	cin >> expense;
+	cout << "Enter successfully" << endl;
+}
+void Family::CostsIncurredInput() {
 	cout << "Enter cost costs incurred: ";
 	cin >> costs_incurred;
+	cout << "Enter successfully" << endl;
 }
-void Family::Input() {
-	IncomeInput();
-	CostInput();
-}
+

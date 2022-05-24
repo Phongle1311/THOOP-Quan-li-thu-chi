@@ -1,17 +1,17 @@
-#pragma once
-#include "MyException.h"
+﻿#pragma once
 #include "SavingsBook.h"
+#include "Date.h"
+#include <vector>
 class SavingsAccount
 {
 private:
-	SavingsBook* books_list;
+	vector<SavingsBook> book_list;
+	double total_balance;
 public:
 	SavingsAccount();
 	~SavingsAccount();
-	double GetTotalBalance();
-	double GetTotalDeposit();
-	bool AddSavingsBook(SavingsBook book);
-	bool RemoveSavingBook(int id );
-	bool MakeDeposit(int id, double money);
+	double GetTotalBalance();								//Lấy tổng tiền hiện có trong tất cả các sổ
+	bool AddSavingsBook(SavingsBook book, double money);	//Mở thêm 1 sổ
+	bool RemoveSavingsBook();								//Xóa những sổ đã hết kỳ hạn
 };
 

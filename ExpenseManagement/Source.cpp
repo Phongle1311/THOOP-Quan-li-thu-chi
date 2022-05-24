@@ -106,7 +106,7 @@ void Menu1() {
 		switch (chon)
 		{
 		case 1:
-
+			
 			break;
 		case 2:
 

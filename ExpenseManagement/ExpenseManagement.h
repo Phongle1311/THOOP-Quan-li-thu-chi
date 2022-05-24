@@ -1,5 +1,4 @@
 #pragma once
-#include "MyException.h"
 #include "Loan.h"
 #include <string>
 #include <iostream>
