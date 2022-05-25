@@ -23,6 +23,18 @@ double SavingsBook::GetBalance() {
 double SavingsBook::GetInterest() {
 	return IsDueDate() ? balance * interest_rate * term : 0;
 }
+Date SavingsBook::GetDueDate() {
+	Date due_date;
+	if (issued_date.GetMonth() + term > 12) {
+		due_date.SetMonth(issued_date.GetMonth() + term - 12);
+		due_date.SetYear(issued_date.GetYear() + 1);
+	}
+	else {
+		due_date.SetMonth(issued_date.GetMonth() + term);
+		due_date.SetYear(issued_date.GetYear());
+	}
+	return due_date;
+}
 bool SavingsBook::IsDueDate() {
 	if (Date::MonthDiff(Date::Current(), issued_date) >= term)
 		return true;

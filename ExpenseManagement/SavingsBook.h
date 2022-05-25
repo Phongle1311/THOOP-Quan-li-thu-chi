@@ -17,6 +17,7 @@ public:
 	double GetBalance();							// Lấy số dư 
 	double GetInterest();							// Lấy tiền lãi
 	bool IsDueDate();								// Kiểm tra đến kỳ hạn chưa
+	Date GetDueDate();								// Lấy ra ngày đảo hạn
 	bool MakeDeposit(double money);					// Gửi tiền vào sổ
 	void TermInput();								// Nhập kỳ hạn
 	void InterestInput();							// Nhập lãi suất
