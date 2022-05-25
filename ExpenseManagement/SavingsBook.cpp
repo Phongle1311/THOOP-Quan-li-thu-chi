@@ -1,18 +1,21 @@
-﻿#include "SavingsBook.h"
+#include "SavingsBook.h"
 #include "Family.h"
+#include "Header.h"
+
 SavingsBook::SavingsBook() {
 	balance = 0;
 	term = 0;
 	interest_rate = 0;
-	issued_date.month = 5;
-	issued_date.year = 2022;
+	issued_date.SetMonth(5);
+	issued_date.SetYear(2022);
 }
+
 SavingsBook::SavingsBook(double balance, int term, double interest_rate, Date issued_date) {
 	this->balance = balance;
 	this->term = term;
 	this->interest_rate = interest_rate;
-	this->issued_date.month = issued_date.month;
-	this->issued_date.year = issued_date.year;
+	this->issued_date.SetMonth(issued_date.GetMonth());
+	this->issued_date.SetYear(issued_date.GetYear());
 }
 double SavingsBook::GetBalance() {
 	return IsDueDate() ? balance + balance * interest_rate * term : balance;
@@ -21,7 +24,7 @@ double SavingsBook::GetInterest() {
 	return IsDueDate() ? balance * interest_rate * term : 0;
 }
 bool SavingsBook::IsDueDate() {
-	if (Date::MonthDiff(Date.Current, issued_date) >= term) //Date.Current là thời điểm hiện tại
+	if (Date::MonthDiff(Date::Current(), issued_date) >= term)
 		return true;
 	return false;
 }
@@ -38,9 +41,11 @@ void SavingsBook::TermInput() {
 	cout << "2. A 1 year term" << endl;
 	cout << "Select a term: ";
 	cin >> select;
-	while (select != 1 && select != 2) {
-		cout << "Select is invalid, Try again: " << endl;
-		cin >> select;
+	bool b = nhapSoNguyen(select);
+	while (!b || select < 1 || select > 2) {
+		if (!b)  cout << "Wrong format, Try again: ";
+		else cout << "Select is invalid, Try again: ";
+		b = nhapSoNguyen(select);
 	}
 	term = (select == 1) ? 6 : 12;
 	cout << "Enter successfully" << endl;
@@ -65,7 +70,7 @@ void SavingsBook::InterestInput() {
 	}
 	cout << "Enter successfully" << endl;
 }
-void SavingsBook::SetIssuedDate(const Date& issued_date) {
-	this->issued_date.month = issued_date.month;
-	this->issued_date.year = issued_date.year;
+void SavingsBook::SetIssuedDate(Date issued_date) {
+	this->issued_date.SetMonth(issued_date.GetMonth());
+	this->issued_date.SetYear(issued_date.GetYear());
 }
