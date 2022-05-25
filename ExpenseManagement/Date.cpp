@@ -47,3 +47,9 @@ int Date::Compare(Date& d){
 int Date::MonthDiff(Date after, Date before){
 	return (after.year - before.year) * 12 + after.month - before.month;
 }
+
+Date Date::Current() {
+	time_t now = time(0);
+	tm* ltm = localtime(&now);
+	return Date(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday);
+}
