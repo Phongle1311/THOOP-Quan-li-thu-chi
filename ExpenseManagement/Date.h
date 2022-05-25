@@ -1,4 +1,6 @@
 #pragma once
+#include <ctime>
+
 class Date
 {
 private:
@@ -10,6 +12,7 @@ public:
 	Date();
 	Date(int day, int month, int year);
 	~Date();
+
 	// Getter and Setter
 	int GetMonth();
 	int GetYear();
@@ -18,7 +21,8 @@ public:
 	void SetYear(int year);
 	void Update(int day, int month, int year);
 
-	int Compare(Date& d);
-	static int MonthDiff(Date after, Date before);
+	int Compare(Date& d);							// 1. greater 0. equal -1. less
+	static int MonthDiff(Date after, Date before);				// the number of months
+	static Date Current();							// current time of system
 };
 
