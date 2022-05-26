@@ -38,21 +38,21 @@ void MainMenu() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                    DO AN QUAN LY THU CHI GIA DINH               ||\n";
-		cout << "|| 1. Quan ly thu nhap                                             ||\n";
-		cout << "|| 2. Quan ly chi tieu                                             ||\n";
-		cout << "|| 3. Quan ly chi no                                               ||\n";
-		cout << "|| 4. Tra cuu thu chi                                              ||\n";
-		cout << "|| 5. Tai khoan ngan hang                                          ||\n";
-		cout << "|| 6. Xuat file excel                                              ||\n";
-		cout << "|| 0. Thoat                                                        ||\n";
+		cout << "||                    Expense Management Project                   ||\n";
+		cout << "|| 1. Manage Income                                                ||\n";
+		cout << "|| 2. Manage Expenses                                              ||\n";
+		cout << "|| 3. Manage Loan                                                  ||\n";
+		cout << "|| 4. Look up                                                      ||\n";
+		cout << "|| 5. Bank                                                         ||\n";
+		cout << "|| 6. Export to file excel                                         ||\n";
+		cout << "|| 0. Exit                                                         ||\n";
 		cout << "||=================================o0o=============================||\n";
-		cout << "Moi ban lua chon: ";
+		cout << "Select: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 6) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -80,7 +80,7 @@ void MainMenu() {
 			break;
 		}
 
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 }
@@ -92,18 +92,18 @@ void Menu1() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                            QUAN LY THU                          ||\n";
-		cout << "|| 1. Nhap luong vo                                                ||\n";
-		cout << "|| 2. Nhap luong chong                                             ||\n";
-		cout << "|| 3. Thu nhap khac												||\n";
-		cout << "|| 0. Quay ve man hinh chinh                                       ||\n";
+		cout << "||                            MANAGE INCOME                        ||\n";
+		cout << "|| 1. Enter wife salary                                            ||\n";
+		cout << "|| 2. Enter husband salary                                         ||\n";
+		cout << "|| 3. Enter other income                                           ||\n";
+		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
-		cout << "Moi ban lua chon: ";
+		cout << "Select: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 4) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -125,7 +125,7 @@ void Menu1() {
 			break;
 		}
 
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 }
@@ -138,17 +138,17 @@ void Menu2() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                            QUAN LY CHI                          ||\n";
-		cout << "|| 1. Nhap chi tieu												||\n";
-		cout << "|| 2. Nhap chi phi phat sinh                                       ||\n";
-		cout << "|| 0. Quay ve man hinh chinh                                       ||\n";
+		cout << "||                            MANAGE EXPENSES                      ||\n";
+		cout << "|| 1. Enter expense                                                ||\n";
+		cout << "|| 2. Enter costs incurred                                         ||\n";
+		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
-		cout << "Moi ban lua chon: ";
+		cout << "Select: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 3) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -167,7 +167,7 @@ void Menu2() {
 			break;
 		}
 	
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 	cout << "Do you want to make deposit into a book?" << endl;
@@ -176,8 +176,8 @@ void Menu2() {
 	cout << "Select: ";
 	bool c = nhapSoNguyen(chon2);
 	while (!c || chon2 < 1 || chon2 > 2) {
-		if (!c)  cout << "Sai dinh dang, moi nhap lai: ";
-		else cout << "Vuot qua gioi han, moi nhap lai: ";
+		if (!c)  cout << "Wrong format, try again: ";
+		else cout << "Limit exceeded, try again: ";
 		c = nhapSoNguyen(chon2);
 	}
 	if (c == 1) {
@@ -196,17 +196,17 @@ void Menu3() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                            QUAN LY NO							||\n";
-		cout << "|| 1. Nhap no 1													||\n";
-		cout << "|| 2. Nhap no 2													||\n";
-		cout << "|| 0. Quay ve man hinh chinh                                       ||\n";
+		cout << "||                            MANAGE LOAN                          ||\n";
+		cout << "|| 1. Enter 1st Loan                                               ||\n";
+		cout << "|| 2. Enter 2nd Loan                                               ||\n";
+		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
 		cout << "Moi ban lua chon: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 2) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -224,7 +224,7 @@ void Menu3() {
 		default:
 			break;
 		}
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 	ExpenseManagement manage = f.GetExpenseManagement();
@@ -239,17 +239,17 @@ void Menu4() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                          TRA CUU THU CHI                        ||\n";
-		cout << "|| 1. Tra cuu thang moi nhat										||\n";
-		cout << "|| 2. Du doan														||\n";
-		cout << "|| 0. Quay ve man hinh chinh                                       ||\n";
+		cout << "||                          LOOK UP                                ||\n";
+		cout << "|| 1. Look up the lastest month                                    ||\n";
+		cout << "|| 2. Predict debt payment situation                               ||\n";
+		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
-		cout << "Moi ban lua chon: ";
+		cout << "Select: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 3) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -258,14 +258,14 @@ void Menu4() {
 		switch (chon)
 		{
 		case 1: {
-			cout << "Tong tien thu: " << f.GetTotalIncome()<<" trieu (vnd)" << endl;
-			cout << "Tong tien chi: " << f.GetTotalCost() << " trieu (vnd)" << endl;
+			cout << "Total Income: " << f.GetTotalIncome()<<" million (vnd)" << endl;
+			cout << "Total Cost: " << f.GetTotalCost() << " million (vnd)" << endl;
 			double money = f.GetTotalIncome() - f.GetTotalCost();
 			if (money > 0) {
-				cout << "Thang nay kiem duoc: +" << money << " trieu (vnd)" << endl;
+				cout << "you earn: +" << money << " million (vnd) in this month" << endl;
 			}
 			else {
-				cout << "Thang nay bi am tien" << endl;
+				cout << "You have negative money in this month." << endl;
 			}
 			break;
 		}
@@ -275,7 +275,7 @@ void Menu4() {
 			break;
 		}
 
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 }
@@ -287,18 +287,18 @@ void Menu5() {
 	while (true) {
 		system("cls");
 		cout << "||================================MENU=============================||\n";
-		cout << "||                          NGAN HANG                              ||\n";
-		cout << "|| 1. Xem tinh trang so no                                         ||\n";
-		cout << "|| 2. Xem tinh trang so tiet kiem                                  ||\n";
-		cout << "|| 3. Tra cuu tong tai khoan                                       ||\n";
-		cout << "|| 0. Quay ve man hinh chinh                                       ||\n";
+		cout << "||                          BANK                                   ||\n";
+		cout << "|| 1. View debt status                                             ||\n";
+		cout << "|| 2. View savings books status                                    ||\n";
+		cout << "|| 3. View total current balance                                   ||\n";
+		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
-		cout << "Moi ban lua chon: ";
+		cout << "Select: ";
 
 		bool b = nhapSoNguyen(chon);
 		while (!b || chon < 0 || chon > 4) {
-			if (!b)  cout << "Sai dinh dang, moi nhap lai: ";
-			else cout << "Vuot qua gioi han, moi nhap lai: ";
+			if (!b)  cout << "Wrong format, try again: ";
+			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(chon);
 		}
 		if (chon == 0) break;
@@ -309,22 +309,22 @@ void Menu5() {
 		case 1: {
 			Date due_date1 = f.GetExpenseManagement().GetDebt().GetDueDateDebtS();
 			Date due_date2 = f.GetExpenseManagement().GetDebt().GetDueDateDebtD();
-			cout << "Ban co 2 khoan no: " << endl;
-			cout << "No 1: " << f.GetExpenseManagement().GetDebt().GetTotalDebtS(due_date1) << "(trieu vnd), ngay dao han: " << due_date1.GetMonth() << "/" << due_date1.GetYear() << endl;
-			cout << "No 2: " << f.GetExpenseManagement().GetDebt().GetTotalDebtD1(due_date2) << "(trieu vnd), ngay dao han: " << due_date2.GetMonth() << "/" << due_date2.GetYear() << endl;
+			cout << "You have 2 debts: " << endl;
+			cout << "Debt 1: " << f.GetExpenseManagement().GetDebt().GetTotalDebtS(due_date1) << "(milion vnd), due date: " << due_date1.GetMonth() << "/" << due_date1.GetYear() << endl;
+			cout << "Debt 2: " << f.GetExpenseManagement().GetDebt().GetTotalDebtD1(due_date2) << "(milion vnd), due date: " << due_date2.GetMonth() << "/" << due_date2.GetYear() << endl;
 			break;
 		}
 		case 2:
 			f.GetAccount().PrintBooksInformation(cur);
 			break;
 		case 3:
-			cout << "Tong so du trong tai khoan hien co la: " << f.GetAccount().GetTotalBalance() << " (trieu vnd)" << endl;
+			cout << "Total current balance you have: " << f.GetAccount().GetTotalBalance() << " (milion vnd)" << endl;
 			break;
 		default:
 			break;
 		}
 
-		std::cout << "Nhan phim bat ki de tro ve!\n";
+		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
 }

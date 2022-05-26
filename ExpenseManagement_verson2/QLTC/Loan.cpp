@@ -48,7 +48,7 @@ void Loan::EnterInterRateDebtD() {
 
 double Loan::GetTotalDebtS(Date cur) {
 	//Đến kì hạn thì mới trả về số tiền còn chưa đến thì trả về 0;
-	if (cur.MonthDiff(cur, START_DAY) >= durationS)
+	if (cur.MonthDiff(cur, START_DAY) == durationS)
 		return debtS + debtS * (durationS / 12.0) * interestRateS;
 	else
 		return 0;
@@ -57,7 +57,7 @@ double Loan::GetTotalDebtS(Date cur) {
 double Loan::GetTotalDebtD1(Date cur) {
 	double res = debtD;
 	int monthsLeft = cur.MonthDiff(cur, START_DAY);
-	if (monthsLeft >= durationD) {
+	if (monthsLeft == durationD) {
 		for (int i = 0; i < durationD; ++i) {
 			if (i >= interestRateD.size() - 1) {
 				res = res + res * interestRateD[interestRateD.size() - 1];
