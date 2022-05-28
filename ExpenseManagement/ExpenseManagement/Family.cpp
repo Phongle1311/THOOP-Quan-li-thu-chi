@@ -1,43 +1,55 @@
 ﻿#include "Family.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
 Family::Family() {
 	wife_salary = 0;
 	husband_salary = 0;
 	other_income = 0;
-	expense = 0;
-	costs_incurred = 0;
+	bills = 0;
+	food_expense = 0;
+	other_expense = 0;
+	accumulated = 0;
+	family_account = 0;
 }
-Family::Family(double wife_salary, double husband_salary, double other_income, double expense, double costs_incurred) {
+Family::Family(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts) {
 	this->wife_salary = wife_salary;
 	this->husband_salary = husband_salary;
 	this->other_income = other_income;
-	this->expense = expense;
-	this->costs_incurred = costs_incurred;
+	this->bills = bills;
+	this->food_expense = food_expense;
+	this->other_expense = other_expense;
+	this->accumulated = accumulated;
+	this->bank_account = bank_account;
+	this->family_account = family_account;
 }
-double Family::GetTotalIncome() {
-	return wife_salary + husband_salary + other_income;
+double Family::GetOtherIncome() {
+	return other_income;
 }
 double Family::GetTotalCost() {
-	return expense + costs_incurred;
+	return bills + food_expense + other_expense;
 }
-double Family::GetDeposit() {
-	// chỉ dùng lương để trả nợ, dùng thu nhập khác để trả chi phí
-	// Nếu thu nhập khác không đủ trả chi phí thì dùng một phần lương để bù vào
-	// tiền lương còn lại bao nhiêu thì gửi tiết kiệm
-	double salary = wife_salary + husband_salary;
-	double shortage = expense + costs_incurred - other_income - manage.GetRemainingMoneyFromBeforeMonths();
-	if (shortage > 0) {
-		manage.SetRemainingMoneyInMonth(0);				//Nếu tháng này thiếu hụt thì nguồn tiền dự trữ cho tháng sau bằng 0
-		return  salary - shortage;
+double Family::GetTotalSalary() {
+	return wife_salary + husband_salary;
+}
+double Family::GetDeposit() {												
+	// chỉ dùng lương để trả nợ, dùng thu nhập khác tháng hiện tại và tiền tích lũy được 
+	// của tháng trước để trả chi phí, nếu thu nhập khác không đủ trả chi phí thì dùng 
+	// một phần lương để bù vào tiền lương còn lại bao nhiêu thì gửi tiết kiệm
+	double diff = GetDiffernceIncomeAndExpense();							
+	if (diff < 0) {
+		return  GetTotalSalary() + diff;
 	}
-	manage.SetRemainingMoneyInMonth(-shortage);			//Cập nhật tiền dự trù cho tháng sau
-	return salary;
+	return GetTotalSalary();												
 }
-double Family::GetRemainingMoney() {
-	if (other_income > expense + costs_incurred)
-		return other_income - expense - costs_incurred;
-	return 0;
+double Family::GetDiffernceIncomeAndExpense() {
+	return GetOtherIncome() + accumulated - GetTotalCost();
+}
+double Family::GetAccumulated() {
+	return accumulated;
+}
+double Family::GetAccumulateForNextMonth() {
+	return GetDiffernceIncomeAndExpense() > 0 ? GetDiffernceIncomeAndExpense() : 0;
 }
 void Family::HusbandSalaryInput() {
 	cout << "Enter husband salary: ";
@@ -51,27 +63,45 @@ void Family::OtherIncomeInput() {
 	cout << "Enter other income: ";
 	cin >> other_income;
 }
-void Family::ExpenseInput() {
-	cout << "Enter expense: ";
-	cin >> expense;
+void Family::BillsInput() {
+	cout << "Enter bills input: ";
+	cin >> bills;
 }
-void Family::CostsIncurredInput() {
-	cout << "Enter cost costs incurred: ";
-	cin >> costs_incurred;
+void Family::FoodExpenseInput() {
+	cout << "Enter food expense input: ";
+	cin >> food_expense;
+}
+void Family::OtherExpenseInput() {
+	cout << "Enter other expense input: ";
+	cin >> other_expense;
+}
+void Family::SetAccumulated(double money) {
+	accumulated = money;
+}
+void Family::PrintAllInformationInput() {
+	cout << "Wife salary: " << wife_salary << endl;
+	cout << "Husband salary: " << husband_salary << endl;
+	cout << "Other income: " << other_income << " (+" << GetAccumulated() << " from last month)" << endl;
+	cout << "Bills: " << bills << endl;
+	cout << "Food expense: " << food_expense << endl;
+	cout << "Other expense: " << other_expense << endl;
+}
+void Family::SaveMoneyToFamilyAccount(double money) {
+	family_account += money;
+}
+void Family::SetDebts(Loan debts) {
+	this->debts = debts;
 }
 bool Family::MakeDepositToAccount(double money, Date cur) {
 	if (GetDeposit() > 0) {
-		account.AddSavingsBook(money, cur);
+		bank_account.AddSavingsBook(money, cur);
 		return true;
 	}
 	return false;
 }
-void Family::SetExpenseManagement(ExpenseManagement manage) {
-	this->manage = manage;
-}
-ExpenseManagement Family::GetExpenseManagement() {
-	return manage;
+Loan Family::GetDebts() {
+	return debts;
 }
 SavingsAccount Family::GetAccount() {
-	return account;
+	return bank_account;
 }

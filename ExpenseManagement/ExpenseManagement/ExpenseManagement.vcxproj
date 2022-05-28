@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Date.cpp" />
-    <ClCompile Include="ExpenseManagement.cpp" />
     <ClCompile Include="Family.cpp" />
     <ClCompile Include="Loan.cpp" />
     <ClCompile Include="main.cpp" />
@@ -150,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Date.h" />
-    <ClInclude Include="ExpenseManagement.h" />
     <ClInclude Include="Family.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Loan.h" />

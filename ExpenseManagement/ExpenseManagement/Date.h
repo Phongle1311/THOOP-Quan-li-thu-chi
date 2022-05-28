@@ -21,8 +21,11 @@ public:
 	void SetYear(int year);
 	void Update(int day, int month, int year);
 
-	int Compare(Date& d);							// 1. greater 0. equal -1. less
-	static int MonthDiff(Date after, Date before);				// the number of months
-	/*static Date Current();*/							// current time of system
+	// 1. greater 0. equal -1. less
+	int Compare(Date& d);	
+	// the number of months
+	static int MonthDiff(Date after, Date before);	
+	// current time of system
+	/*static Date Current();*/							
 };
 

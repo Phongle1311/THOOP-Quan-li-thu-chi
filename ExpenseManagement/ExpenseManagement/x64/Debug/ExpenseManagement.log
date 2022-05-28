@@ -1,8 +1,3 @@
-﻿  Loan.cpp
-D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Loan.cpp(14,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Loan.cpp(17,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Loan.cpp(77,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Source.cpp
-D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Source.cpp(12,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
+﻿  Source.cpp
+D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Source.cpp(15,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   ExpenseManagement.vcxproj -> D:\LE HOANG PHUC\Github\ExpenseManagement\x64\Debug\ExpenseManagement.exe

@@ -1,5 +1,4 @@
 #include "Date.h"
-#define _CRT_SECURE_NO_WARNINGS
 Date::Date() {
 	day = 1;
 	month = 1;

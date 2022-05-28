@@ -62,18 +62,16 @@ void SavingsBook::TermInput() {
 	cout << "2. A 1 year term" << endl;
 	cout << "Select a term: ";
 	cin >> select;
-	/*bool b = nhapSoNguyen(select);
-	while (!b || select < 1 || select > 2) {
-		if (!b)  cout << "Wrong format, Try again: ";
-		else cout << "Select is invalid, Try again: ";
-		b = nhapSoNguyen(select);
-	}*/
+	while (select < 1 || select > 2) {
+		cout << "Select is invalid, Try again: ";
+		cin >> select;
+	}
 	term = (select == 1) ? 6 : 12;
 }
 void SavingsBook::InterestInput() {
 	double interest_rate_input;
 	if (term <= 6) {
-		cout << "Enter monthly interest rate (0.004 - 0.01): ";		// Đặt phạm vi nhất định (theo tháng)
+		cout << "Enter monthly interest rate (0.004 - 0.01): ";		     // Đặt phạm vi nhất định (theo tháng)
 		cin >> interest_rate_input;
 		while (interest_rate_input < 0.004 || interest_rate_input > 0.01) {
 			cout << "Limit exceeded, try again: ";

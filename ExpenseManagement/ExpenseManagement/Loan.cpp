@@ -20,10 +20,9 @@ Loan::Loan(double debtS, double durationS, double interestRateS, double debtD, d
 void Loan::EnterInforDebtS() {
 	cout << "Enter static debt: ";
 	cin >> debtS;
-	cout << "Enter duration of static debt (year): ";
+	cout << "Enter duration of static debt (month): ";
 	cin >> durationS;
-	durationS *= 12;
-	cout << "Enter interest rate of static debt (%/year, vd: 1% = 0.01): ";
+	cout << "Enter interest rate of static debt (vd: 1% = 0.01): ";
 	cin >> interestRateS;
 }
 
@@ -36,7 +35,7 @@ void Loan::EnterInforDebtD() {
 
 void Loan::EnterInterRateDebtD() {
 	if (interestRateD.size() < durationD) {
-		cout << "Enter Interest rate of " << interestRateD.size() + 1 << " month (%/month, vd: 1% = 0.01): ";
+		cout << "Enter Interest rate of " << interestRateD.size() + 1 << " month (vd: 1% = 0.01): ";
 		double temp;
 		cin >> temp;
 		interestRateD.push_back(temp);
@@ -48,8 +47,8 @@ void Loan::EnterInterRateDebtD() {
 
 double Loan::GetTotalDebtS(Date cur) {
 	//Đến kì hạn thì mới trả về số tiền còn chưa đến thì trả về 0;
-	if (cur.MonthDiff(cur, START_DAY) == durationS)
-		return debtS + debtS * (durationS / 12.0) * interestRateS;
+	if (cur.MonthDiff(cur, START_DAY) <= durationS)
+		return debtS + debtS * durationS * interestRateS;
 	else
 		return 0;
 }
@@ -57,7 +56,7 @@ double Loan::GetTotalDebtS(Date cur) {
 double Loan::GetTotalDebtD1(Date cur) {
 	double res = debtD;
 	int monthsLeft = cur.MonthDiff(cur, START_DAY);
-	if (monthsLeft == durationD) {
+	if (monthsLeft <= durationD) {
 		for (int i = 0; i < durationD; ++i) {
 			if (i >= interestRateD.size() - 1) {
 				res = res + res * interestRateD[interestRateD.size() - 1];
@@ -86,6 +85,21 @@ double Loan::GetTotalDebtD2(Date cur) {
 	}
 	return res;
 }
+
+int Loan::GetDurationS() {
+	return durationS;
+}
+int Loan::GetDurationD() {
+	return durationD;
+}
+
+double Loan::GetInterRateS(Date cur) {
+	return GetTotalDebtS(cur) - debtS;
+}
+double Loan::GetInterRateD1(Date cur) {
+	return GetTotalDebtD1(cur) - debtD;
+}
+
 Date Loan::GetDueDateDebtS() {
 	Date due_date;
 	if (START_DAY.GetMonth() + durationS > 12) {
@@ -97,7 +111,8 @@ Date Loan::GetDueDateDebtS() {
 		due_date.SetYear(START_DAY.GetYear());
 	}
 	return due_date;
-}
+} 
+
 Date Loan::GetDueDateDebtD() {
 	Date due_date;
 	if (START_DAY.GetMonth() + durationD > 12) {
