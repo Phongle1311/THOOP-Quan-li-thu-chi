@@ -36,9 +36,7 @@ public:
 	//Lấy ra nợ (cố định) phải trả trong tháng này
 	double GetTotalDebtS(Date cur);
 	//Lấy ra nợ (linh động) phải trả trong tháng này
-	double GetTotalDebtD1(Date cur);
-	//Lấy ra nợ (linh động) ước tính dựa vào tháng mới nhất 
-	double GetTotalDebtD2(Date cur);
+	double GetTotalDebtD(Date cur);
 	//Lấy ra kì hạn nợ (cố định)
 	int GetDurationS();
 	//Lấy ra kì hạn nợ (linh động)
@@ -46,7 +44,7 @@ public:
 	//Lấy ra tổng tiền lãi nợ (cố định)
 	double GetInterRateS(Date cur);
 	//Lấy ra tổng tiền lãi nợ (linh động)
-	double GetInterRateD1(Date cur);
+	double GetInterRateD(Date cur);
 
 	//Lấy ra ngày đảo hạn của nợ linh động
 	Date GetDueDateDebtD();

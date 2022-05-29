@@ -53,37 +53,32 @@ double Loan::GetTotalDebtS(Date cur) {
 		return 0;
 }
 
-double Loan::GetTotalDebtD1(Date cur) {
-	double res = debtD;
+double Loan::GetTotalDebtD(Date cur) {
 	int monthsLeft = cur.MonthDiff(cur, START_DAY);
 	if (monthsLeft <= durationD) {
-		for (int i = 0; i < durationD; ++i) {
-			if (i >= interestRateD.size() - 1) {
-				res = res + res * interestRateD[interestRateD.size() - 1];
-			}
-			else {
-				res = res + res * interestRateD[i];
-			}
+		int n = interestRateD.size();
+		if (n == 0) {
+			cout << "Error: Must have information for at least 1 month!";
+			return 0;
+		}
+		double res = debtD;
+		if (n > durationD) {
+			n = durationD;
+		}
+		int root = debtD;
+		for (int i = 0; i < n; ++i) {
+			res += (root * interestRateD[i]);
+		}
+		if (n > durationD)
+			return res;
+		for (int i = n; i < durationD; ++i) {
+			res += (root * interestRateD[n - 1]);
 		}
 		return res;
 	}
 	else {
 		return 0;
 	}
-}
-
-double Loan::GetTotalDebtD2(Date cur) {
-	int n = interestRateD.size();
-	double res = debtD;
-	int monthsLeft = cur.MonthDiff(cur, START_DAY);
-	for (int i = 0; i < n; ++i) {
-		res = res + (res * interestRateD[i]);
-	}
-	int m = monthsLeft - n;
-	for (int i = n; i < m; ++i) {
-		res = res + (res * interestRateD[n - 1]);
-	}
-	return res;
 }
 
 int Loan::GetDurationS() {
@@ -96,8 +91,8 @@ int Loan::GetDurationD() {
 double Loan::GetInterRateS(Date cur) {
 	return GetTotalDebtS(cur) - debtS;
 }
-double Loan::GetInterRateD1(Date cur) {
-	return GetTotalDebtD1(cur) - debtD;
+double Loan::GetInterRateD(Date cur) {
+	return GetTotalDebtD(cur) - debtD;
 }
 
 Date Loan::GetDueDateDebtS() {

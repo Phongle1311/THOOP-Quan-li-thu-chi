@@ -44,7 +44,9 @@ public:
 	//Lấy ra tiền tích lũy dư được từ tháng trước
 	double GetAccumulated();
 	//Lấy ra tiền tích lũy được của tháng này để dành cho tháng sau
-	double GetAccumulateForNextMonth();		
+	double GetAccumulateForNextMonth();	
+	//Lấy ra tiền trong tài khoản gia đình
+	double GetFamilyAccount();
 	//Gửi tiền vào ngân hàng
 	bool MakeDepositToAccount(double money, Date cur);
 	
@@ -65,6 +67,8 @@ public:
 	void SetAccumulated(double money);
 	//Cập nhật khoản nợ
 	void SetDebts(Loan debts);
+	//Cập nhật tài khoản ngân hàng
+	void SetAccount(SavingsAccount bank_account);
 	//In ra thông tin đã nhập
 	void PrintAllInformationInput();
 	//Gửi tiền vào tài khoản riêng của gia đình (không tính lãi)

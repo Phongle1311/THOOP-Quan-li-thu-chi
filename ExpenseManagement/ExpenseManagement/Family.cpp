@@ -51,6 +51,9 @@ double Family::GetAccumulated() {
 double Family::GetAccumulateForNextMonth() {
 	return GetDiffernceIncomeAndExpense() > 0 ? GetDiffernceIncomeAndExpense() : 0;
 }
+double Family::GetFamilyAccount() {
+	return family_account;
+}
 void Family::HusbandSalaryInput() {
 	cout << "Enter husband salary: ";
 	cin >> husband_salary;
@@ -91,6 +94,9 @@ void Family::SaveMoneyToFamilyAccount(double money) {
 }
 void Family::SetDebts(Loan debts) {
 	this->debts = debts;
+}
+void Family::SetAccount(SavingsAccount bank_account) {
+	this->bank_account = bank_account;
 }
 bool Family::MakeDepositToAccount(double money, Date cur) {
 	if (GetDeposit() > 0) {
