@@ -34,17 +34,17 @@ public:
 	void EnterInterRateDebtD();
 
 	//Lấy ra nợ (cố định) phải trả trong tháng này
-	double GetTotalDebtS(Date cur);
+	double GetTotalDebtS();
 	//Lấy ra nợ (linh động) phải trả trong tháng này
-	double GetTotalDebtD(Date cur);
+	double GetTotalDebtD();
 	//Lấy ra kì hạn nợ (cố định)
 	int GetDurationS();
 	//Lấy ra kì hạn nợ (linh động)
 	int GetDurationD();
 	//Lấy ra tổng tiền lãi nợ (cố định)
-	double GetInterRateS(Date cur);
+	double GetInterRateS();
 	//Lấy ra tổng tiền lãi nợ (linh động)
-	double GetInterRateD(Date cur);
+	double GetInterRateD();
 
 	//Lấy ra ngày đảo hạn của nợ linh động
 	Date GetDueDateDebtD();

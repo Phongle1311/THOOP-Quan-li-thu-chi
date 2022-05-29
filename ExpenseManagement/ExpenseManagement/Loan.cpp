@@ -22,8 +22,12 @@ void Loan::EnterInforDebtS() {
 	cin >> debtS;
 	cout << "Enter duration of static debt (month): ";
 	cin >> durationS;
-	cout << "Enter interest rate of static debt (vd: 1% = 0.01): ";
+	cout << "Enter interest rate of static debt (0.004 - 0.02): ";
 	cin >> interestRateS;
+	while (interestRateS < 0.004 || interestRateS > 0.02) {
+		cout << "Limit exceeded, try again: ";
+		cin >> interestRateS;
+	}
 }
 
 void Loan::EnterInforDebtD() {
@@ -35,9 +39,13 @@ void Loan::EnterInforDebtD() {
 
 void Loan::EnterInterRateDebtD() {
 	if (interestRateD.size() < durationD) {
-		cout << "Enter Interest rate of " << interestRateD.size() + 1 << " month (vd: 1% = 0.01): ";
+		cout << "Enter Interest rate of " << interestRateD.size() + 1 << " month (0.004 - 0.02): ";
 		double temp;
 		cin >> temp;
+		while (temp < 0.004 || temp > 0.02) {
+			cout << "Limit exceeded, try again: ";
+			cin >> temp;
+		}
 		interestRateD.push_back(temp);
 	}
 	else
@@ -45,40 +53,30 @@ void Loan::EnterInterRateDebtD() {
 		cout << "Error at UpdateInterestRateD!!! (overdue)" << '\n';
 }
 
-double Loan::GetTotalDebtS(Date cur) {
-	//Đến kì hạn thì mới trả về số tiền còn chưa đến thì trả về 0;
-	if (cur.MonthDiff(cur, START_DAY) <= durationS)
-		return debtS + debtS * durationS * interestRateS;
-	else
-		return 0;
+double Loan::GetTotalDebtS() {
+	return debtS + debtS * durationS * interestRateS;
 }
 
-double Loan::GetTotalDebtD(Date cur) {
-	int monthsLeft = cur.MonthDiff(cur, START_DAY);
-	if (monthsLeft <= durationD) {
-		int n = interestRateD.size();
-		if (n == 0) {
-			cout << "Error: Must have information for at least 1 month!";
-			return 0;
-		}
-		double res = debtD;
-		if (n > durationD) {
-			n = durationD;
-		}
-		int root = debtD;
-		for (int i = 0; i < n; ++i) {
-			res += (root * interestRateD[i]);
-		}
-		if (n > durationD)
-			return res;
-		for (int i = n; i < durationD; ++i) {
-			res += (root * interestRateD[n - 1]);
-		}
-		return res;
-	}
-	else {
+double Loan::GetTotalDebtD() {
+	int n = interestRateD.size();
+	if (n == 0) {
+		cout << "Error: Must have information for at least 1 month!";
 		return 0;
 	}
+	double res = debtD;
+	if (n > durationD) {
+		n = durationD;
+	}
+	int root = debtD;
+	for (int i = 0; i < n; ++i) {
+		res += (root * interestRateD[i]);
+	}
+	if (n > durationD)
+		return res;
+	for (int i = n; i < durationD; ++i) {
+		res += (root * interestRateD[n - 1]);
+	}
+	return res;
 }
 
 int Loan::GetDurationS() {
@@ -88,11 +86,11 @@ int Loan::GetDurationD() {
 	return durationD;
 }
 
-double Loan::GetInterRateS(Date cur) {
-	return GetTotalDebtS(cur) - debtS;
+double Loan::GetInterRateS() {
+	return GetTotalDebtS() - debtS;
 }
-double Loan::GetInterRateD(Date cur) {
-	return GetTotalDebtD(cur) - debtD;
+double Loan::GetInterRateD() {
+	return GetTotalDebtD() - debtD;
 }
 
 Date Loan::GetDueDateDebtS() {

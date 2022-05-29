@@ -84,7 +84,7 @@ void Family::SetAccumulated(double money) {
 void Family::PrintAllInformationInput() {
 	cout << "Wife salary: " << wife_salary << endl;
 	cout << "Husband salary: " << husband_salary << endl;
-	cout << "Other income: " << other_income << " (+" << GetAccumulated() << " from last month)" << endl;
+	cout << "Other income: " << other_income + accumulated << " (included +" << accumulated << " from last month)" << endl;
 	cout << "Bills: " << bills << endl;
 	cout << "Food expense: " << food_expense << endl;
 	cout << "Other expense: " << other_expense << endl;
@@ -101,6 +101,13 @@ void Family::SetAccount(SavingsAccount bank_account) {
 bool Family::MakeDepositToAccount(double money, Date cur) {
 	if (GetDeposit() > 0) {
 		bank_account.AddSavingsBook(money, cur);
+		return true;
+	}
+	return false;
+}
+bool Family::MakeDepositToAccount(double money, int term, double interest_rate, Date cur) {
+	if (GetDeposit() > 0) {
+		bank_account.AddSavingsBook(money, term, interest_rate, cur);
 		return true;
 	}
 	return false;

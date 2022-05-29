@@ -47,8 +47,10 @@ public:
 	double GetAccumulateForNextMonth();	
 	//Lấy ra tiền trong tài khoản gia đình
 	double GetFamilyAccount();
-	//Gửi tiền vào ngân hàng
+	//Gửi tiền vào ngân hàng (chưa biết trước kì hạn, lãi suất)
 	bool MakeDepositToAccount(double money, Date cur);
+	//Gửi tiền vào ngân hàng (đã biết trước kì hạn, lãi suất)
+	bool MakeDepositToAccount(double money, int term, double interest_rate, Date cur);
 	
 	//Nhập lương chồng	
 	void HusbandSalaryInput();	

@@ -6,16 +6,17 @@ SavingsBook::SavingsBook() {
 	balance = 0;
 	term = 0;
 	interest_rate = 0;
-	issued_date.SetMonth(5);
-	issued_date.SetYear(2022);
+	issued_date.Update(1, 5, 2022);
 }
 
 SavingsBook::SavingsBook(double balance, int term, double interest_rate, Date issued_date) {
 	this->balance = balance;
 	this->term = term;
 	this->interest_rate = interest_rate;
-	this->issued_date.SetMonth(issued_date.GetMonth());
-	this->issued_date.SetYear(issued_date.GetYear());
+	issued_date.Update(1, issued_date.GetMonth(), issued_date.GetYear());
+}
+double SavingsBook::GetPrincipal() {
+	return GetBalance(issued_date);
 }
 double SavingsBook::GetBalance(Date cur) {
 	return IsDueDate(cur) ? balance + balance * interest_rate * term : balance;
@@ -85,8 +86,15 @@ void SavingsBook::InterestInput() {
 			cout << "Limit exceeded, try again: ";
 			cin >> interest_rate_input;
 		}
+		interest_rate_input /= 12;
 	}
 	interest_rate = interest_rate_input;
+}
+void SavingsBook::SetTerm(int term) {
+	this->term = term;
+}
+void SavingsBook::SetInterestRate(double interest_rate) {
+	this->interest_rate = interest_rate;
 }
 void SavingsBook::SetIssuedDate(Date issued_date) {
 	this->issued_date.SetMonth(issued_date.GetMonth());

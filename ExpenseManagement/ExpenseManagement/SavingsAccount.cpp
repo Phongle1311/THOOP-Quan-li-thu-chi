@@ -14,6 +14,23 @@ double SavingsAccount::GetTotalInterest(Date cur) {
 	RemoveSavingsBook(cur);
 	return total_interest;
 }
+int SavingsAccount::GetNumberBooks() {
+	return book_list.size();
+}
+SavingsBook SavingsAccount::GetBook(int index) {
+	if (index < book_list.size())
+		return book_list[index];
+	return book_list.back();
+}
+SavingsBook SavingsAccount::GetBook(Date issued_date) {
+	SavingsBook sb;
+	for (int i = 0; i < book_list.size(); i++) {
+		if (book_list[i].GetIssuedDate().Compare(issued_date) == 0) {
+			return book_list[i];
+		}
+	}
+	return sb;
+}
 bool SavingsAccount::AddSavingsBook(double money, Date cur) {
 	SavingsBook book;
 	book.MakeDeposit(money);
@@ -22,6 +39,15 @@ bool SavingsAccount::AddSavingsBook(double money, Date cur) {
 	book.SetIssuedDate(cur);
 	book_list.push_back(book);
 	total_balance += money;									 //Lúc này chưa có lãi, nên chỉ cộng thêm tiền gốc 
+	return true;
+}
+bool SavingsAccount::AddSavingsBook(double money, int term, double interest_rate, Date cur) {
+	SavingsBook book;
+	book.MakeDeposit(money);
+	book.SetTerm(term);
+	book.SetInterestRate(interest_rate);
+	book.SetIssuedDate(cur);
+	book_list.push_back(book);
 	return true;
 }
 bool SavingsAccount::RemoveSavingsBook(Date cur) {

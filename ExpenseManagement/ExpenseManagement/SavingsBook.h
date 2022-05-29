@@ -28,6 +28,8 @@ public:
 	Date GetIssuedDate();
 	//Lấy ra tiền lãi
 	double GetInterest(Date cur);
+	//Lấy ra tiền gốc
+	double GetPrincipal();
 	//Lấy ra ngày đảo hạn
 	Date GetDueDate();
 	//Kiểm tra đến kỳ hạn chưa
@@ -38,6 +40,10 @@ public:
 	void TermInput();	
 	//Nhập lãi suất
 	void InterestInput();
+	//Đặt kì hạn
+	void SetTerm(int term);
+	//Đặt lãi suất
+	void SetInterestRate(double interest_rate);
 	//Đặt ngày phát hành sổ
 	void SetIssuedDate(Date issued_date);			
 };

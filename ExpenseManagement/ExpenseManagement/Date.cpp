@@ -30,8 +30,14 @@ void Date::SetYear(int year) {
 }
 void Date::Update(int day, int month, int year) {
 	this->day = day;
-	this->month = month;
-	this->year = year;
+	if (month > 12) {
+		this->month = month - 12;
+		this->year = year + 1;
+	}
+	else {
+		this->month = month;
+		this->year = year;
+	}
 }
 int Date::Compare(Date& d) {
 	if (year < d.year) return -1;

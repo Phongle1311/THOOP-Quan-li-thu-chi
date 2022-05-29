@@ -88,13 +88,7 @@ void MainMenu() {
 			f[index + 1].SetAccount(f[index].GetAccount());                         //Cập nhật các thông tin thẻ ngân hàng cho tháng sau
 			f[index + 1].SetDebts(f[index].GetDebts());                             //Cập nhật các thông tin nợ cho tháng sau
 			index++;
-			int new_month = cur.GetMonth() + 1;
-			if (new_month > 12) {
-				cur.Update(1, new_month - 12, cur.GetYear() + 1);
-			}
-			else {
-				cur.Update(1, new_month, cur.GetYear());
-			}
+			cur.Update(1, cur.GetMonth() + 1, cur.GetYear());
 			break;
 		}
 		default:
@@ -249,7 +243,7 @@ void Menu3() {
 		cout << "||================================MENU=============================||\n";
 		cout << "||                               LOOK UP                           ||\n";
 		cout << "|| 1. Look up the lastest month                                    ||\n";
-		cout << "|| 2. Predict debt payment situation                               ||\n";
+		cout << "|| 2. Predict debts payment situation                               ||\n";
 		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
 		cout << "Select: ";
@@ -292,15 +286,18 @@ void Menu3() {
 		case 2: {
 			int duration_d = f[index].GetDebts().GetDurationD();
 			int duration_s = f[index].GetDebts().GetDurationS();
-			double monthly_debt_d = f[index].GetDebts().GetTotalDebtD(cur) / duration_d;
-			double monthly_debt_s = f[index].GetDebts().GetTotalDebtS(cur) / duration_s;
+			double monthly_debt_d = f[index].GetDebts().GetTotalDebtD() / duration_d;
+			double monthly_debt_s = f[index].GetDebts().GetTotalDebtS() / duration_s;
 			Date due_date_debt_d = f[index].GetDebts().GetDueDateDebtD();
 			Date due_date_debt_s = f[index].GetDebts().GetDueDateDebtS();
 			double accumulate = f[index].GetAccumulateForNextMonth();
-			/*double balance_bank = f[index].GetAccount().GetTotalBalance(cur);
-			double balance_family = f[index].GetFamilyAccount();*/
-			/*double total_month = accumulate + balance_bank + balance_family;*/
-			double total_month = accumulate;
+			double deposit = f[index].GetAccount().GetBook(cur).GetPrincipal();
+			double balance_family = f[index].GetFamilyAccount();
+			double total_month = accumulate + f[index].GetDeposit();
+
+			cout << "Total 1st debt is: " << f[index].GetDebts().GetTotalDebtD() << endl;
+			cout << "Total 2nd debt is: " << f[index].GetDebts().GetTotalDebtS() << endl;
+			cout << "Total debts you have: " << f[index].GetDebts().GetTotalDebtD() + f[index].GetDebts().GetTotalDebtS() << endl;
 			cout << "Estimated 1st debt per month is: " << monthly_debt_d << endl;
 			cout << "Estimated 2nd debt per month is: " << monthly_debt_s << endl;
 			cout << "Total estimated debts per month you have to pay is: " << monthly_debt_s + monthly_debt_d << endl;
@@ -309,57 +306,111 @@ void Menu3() {
 				break;
 			}
 			else {
-				/*cout << "Total accumalate for next month: " << accumulate << endl;
-				cout << "Total balance in bank account: " << balance_bank << endl;
-				cout << "Total balance in family account: " << balance_family << endl;*/
-				cout << "Total amount of money you can have in this month to pay debts: " << total_month << endl;
-				cout << "Prediction: " << endl;
+				cout << "Total accumulated money from incomes - expenses in this month: +" << accumulate << endl;
+				cout << "Total money you make a deposit to a savings book: " << deposit << endl;
+				cout << "Total balance in family account: " << balance_family << endl;
+				cout << "Total amount of money you can have in this month to pay debts (excluding interest): " << accumulate + deposit + balance_family << endl;
+				cout << endl << "Prediction: " << endl;
 				if (due_date_debt_d.Compare(due_date_debt_s) == -1) {
-					//Dự doán nợ 1
-					if (total_month >= monthly_debt_d) {
-						cout << "You will have enough money to pay 1st debt on " << due_date_debt_d.GetMonth()
-							<< "/" << due_date_debt_d.GetYear() << endl;
+					//Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu tiên
+					Date cur1(1, cur.GetMonth() + 1, cur.GetYear());
+					Family f1 = f[index];
+					SavingsBook sb = f1.GetAccount().GetBook(f1.GetAccount().GetNumberBooks() - 1);
+					while (cur1.Compare(due_date_debt_d) < 0) {
+						f1.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur1);
+						cur1.Update(1, cur1.GetMonth() + 1, cur1.GetYear());
+					}
+					//f1.GetAccount().PrintBooksInformation(cur1);
+					double total1 = 0;
+					double interest1 = f1.GetAccount().GetTotalInterest(cur1);
+					for (int i = 0; i < index; i++) {
+						total1 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
+					}
+					total1 += total_month * Date::MonthDiff(due_date_debt_d, cur) + interest1;
+
+					//Dự đoán nợ 1
+					cout << "On " << due_date_debt_d.GetMonth() << "/" << due_date_debt_d.GetYear() << endl;
+					cout << "Total amount of money you can have is: " << total1 << " (included +" << interest1 << " from interest)" << endl;
+					if (total1 > f[index].GetDebts().GetTotalDebtD()) {
+						cout << "You will have enough money to pay 1st debt" << endl;
 					}
 					else {
-						cout << "Regretfully, You need " << abs(total_month * duration_d - f[index].GetDebts().GetTotalDebtD(cur))
-							<< " more to pay 1st debt on " << due_date_debt_d.GetMonth()
-							<< "/" << due_date_debt_d.GetYear() << endl;
+						cout << "Regretfully, You need " << abs(total1 - f[index].GetDebts().GetTotalDebtD())
+							<< " more to pay 1st debt" << endl;
 					}
 
-					//Dự doán nợ 2
-					if (total_month * duration_s 
-						- (f[index].GetDebts().GetTotalDebtS(cur) + f[index].GetDebts().GetTotalDebtD(cur)) > 0) {
-						cout << "You will have enough money to pay 2nd debt on " << due_date_debt_s.GetMonth()
-							<< "/" << due_date_debt_s.GetYear() << endl;
+					//Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu thứ hai
+					while (cur1.Compare(due_date_debt_s) < 0) {
+						f1.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur1);
+						cur1.Update(1, cur1.GetMonth() + 1, cur1.GetYear());
+					}
+					//f1.GetAccount().PrintBooksInformation(cur1);
+					double total2 = 0;
+					double interest2 = f1.GetAccount().GetTotalInterest(cur1);
+					for (int i = 0; i < index; i++) {
+						total2 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
+					}
+					total2 += total_month * Date::MonthDiff(due_date_debt_s, cur) + interest2;
+
+					//Dự đoán nợ 2
+					cout << "On " << due_date_debt_s.GetMonth() << "/" << due_date_debt_s.GetYear() << endl;
+					cout << "Total amount of money you can have is: " << total2 << " (included +" << interest2 << " from interest)" << endl;
+					if (total2 - (f[index].GetDebts().GetTotalDebtS() + f[index].GetDebts().GetTotalDebtD()) > 0) {
+						cout << "You will have enough money to pay 2nd debt" << endl;
 					}
 					else {
-						cout << "Regretfully, You need " << abs(total_month * duration_s
-							- (f[index].GetDebts().GetTotalDebtS(cur) + f[index].GetDebts().GetTotalDebtD(cur)))
-							<< " more to pay 2nd debt on " << due_date_debt_s.GetMonth()
-							<< "/" << due_date_debt_s.GetYear() << endl;
+						cout << "Regretfully, You need " << abs(total2 - (f[index].GetDebts().GetTotalDebtS() + f[index].GetDebts().GetTotalDebtD()))
+							 << " more to pay 2nd debt" << endl;
 					}
 				}
 				else {
-					//Dự doán nợ 1
-					if (total_month >= monthly_debt_s) {
-						cout << "You will have enough money to pay 2nd debt on " << due_date_debt_s.GetMonth()
-							<< "/" << due_date_debt_s.GetYear() << endl;
+					//Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu thứ hai
+					Date cur2(1, cur.GetMonth() + 1, cur.GetYear());
+					Family f2 = f[index];
+					SavingsBook sb = f2.GetAccount().GetBook(f2.GetAccount().GetNumberBooks() - 1);
+					while (cur2.Compare(due_date_debt_s) < 0) {
+						f2.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur2);
+						cur2.Update(1, cur2.GetMonth() + 1, cur2.GetYear());
+					}
+					double total2 = 0;
+					double interest2 = f2.GetAccount().GetTotalInterest(cur2);
+					for (int i = 0; i < index; i++) {
+						total2 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
+					}
+					total2 += total_month * Date::MonthDiff(due_date_debt_s, cur) + interest2;
+
+					//Dự đoán nợ 2
+					cout << "On " << due_date_debt_s.GetMonth() << "/" << due_date_debt_s.GetYear() << endl;
+					cout << "Total amount of money you can have is: " << total2 << " (included +" << interest2 << " from interest)" << endl;
+					if (total2 > f[index].GetDebts().GetTotalDebtS()) {
+						cout << "You will have enough money to pay 2nd debt" << endl;
 					}
 					else {
-						cout << "Regretfully, You need " << abs((total_month - monthly_debt_s) * duration_s)
-							<< " more to pay 2nd debt on " << due_date_debt_s.GetMonth()
-							<< "/" << due_date_debt_s.GetYear() << endl;
+						cout << "Regretfully, You need " << abs(total2 - f[index].GetDebts().GetTotalDebtS())
+							<< " more to pay 2nd debt" << endl;
 					}
 
-					//Dự doán nợ 2
-					if (total_month * duration_d - (monthly_debt_d + monthly_debt_s) > 0) {
-						cout << "You will have enough money to pay 1st debt on " << due_date_debt_d.GetMonth()
-							<< "/" << due_date_debt_d.GetYear() << endl;
+					//Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu tiên
+					while (cur2.Compare(due_date_debt_d) < 0) {
+						f2.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur2);
+						cur2.Update(1, cur2.GetMonth() + 1, cur2.GetYear());
+					}
+					double total1 = 0;
+					double interest1 = f2.GetAccount().GetTotalInterest(cur2);
+					for (int i = 0; i < index; i++) {
+						total1 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
+					}
+					total1 += total_month * Date::MonthDiff(due_date_debt_d, cur) + interest1;
+
+					//Dự đoán nợ 1
+					cout << "On " << due_date_debt_d.GetMonth() << "/" << due_date_debt_d.GetYear() << endl;
+					cout << "Total amount of money you can have is: " << total1 << " (included +" << interest1 << " from interest)" << endl;
+					if (total1 - (f[index].GetDebts().GetTotalDebtS() + f[index].GetDebts().GetTotalDebtD()) > 0) {
+						cout << "You will have enough money to pay 1st debt" << endl;
 					}
 					else {
-						cout << "Regretfully, You need " << abs(total_month * duration_d - (monthly_debt_d + monthly_debt_s))
-							<< " more to pay 1st debt on " << due_date_debt_d.GetMonth()
-							<< "/" << due_date_debt_d.GetYear() << endl;
+						cout << "Regretfully, You need " << abs(total1 - (f[index].GetDebts().GetTotalDebtS() + f[index].GetDebts().GetTotalDebtD()))
+							<< " more to pay 1st debt" << endl;
 					}
 				}
 			}
@@ -405,8 +456,8 @@ void Menu4() {
 			Date due_date_d = f[index].GetDebts().GetDueDateDebtD();
 			Date due_date_s = f[index].GetDebts().GetDueDateDebtS();
 			cout << "You have 2 debts: " << endl;
-			cout << "Debt 1: " << f[index].GetDebts().GetTotalDebtD(cur) << ", due date: " << due_date_d.GetMonth() << "/" << due_date_d.GetYear() << endl;
-			cout << "Debt 2: " << f[index].GetDebts().GetTotalDebtS(cur) << ", due date: " << due_date_s.GetMonth() << "/" << due_date_s.GetYear() << endl;
+			cout << "Debt 1: " << f[index].GetDebts().GetTotalDebtD() << ", due date: " << due_date_d.GetMonth() << "/" << due_date_d.GetYear() << endl;
+			cout << "Debt 2: " << f[index].GetDebts().GetTotalDebtS() << ", due date: " << due_date_s.GetMonth() << "/" << due_date_s.GetYear() << endl;
 			break;
 		}
 		case 2:
