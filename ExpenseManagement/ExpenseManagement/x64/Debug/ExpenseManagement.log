@@ -1,7 +1,4 @@
 ﻿  Family.cpp
-  SavingsAccount.cpp
-D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\SavingsAccount.cpp(18,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  SavingsBook.cpp
   Source.cpp
 D:\LE HOANG PHUC\Github\ExpenseManagement\ExpenseManagement\Source.cpp(18,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...

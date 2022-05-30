@@ -60,7 +60,7 @@ bool SavingsBook::MakeDeposit(double money) {
 void SavingsBook::TermInput() {
 	int select;
 	cout << "1. A 6 month term" << endl;
-	cout << "2. A 1 year term" << endl;
+	cout << "2. A 12 month term" << endl;
 	cout << "Select a term: ";
 	cin >> select;
 	while (select < 1 || select > 2) {
@@ -80,13 +80,12 @@ void SavingsBook::InterestInput() {
 		}
 	}
 	else {
-		cout << "Enter annual interest rate (0.05 - 0.07): ";			// Đặt phạm vi nhất định (theo năm)
+		cout << "Enter monthly interest rate (0.004 - 0.01): ";			// Đặt phạm vi nhất định (theo tháng)
 		cin >> interest_rate_input;
-		while (interest_rate_input < 0.05 || interest_rate_input > 0.07) {
+		while (interest_rate_input < 0.004 || interest_rate_input > 0.01) {
 			cout << "Limit exceeded, try again: ";
 			cin >> interest_rate_input;
 		}
-		interest_rate_input /= 12;
 	}
 	interest_rate = interest_rate_input;
 }

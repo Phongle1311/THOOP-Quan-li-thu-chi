@@ -243,13 +243,14 @@ void Menu3() {
 		cout << "||================================MENU=============================||\n";
 		cout << "||                               LOOK UP                           ||\n";
 		cout << "|| 1. Look up the lastest month                                    ||\n";
-		cout << "|| 2. Predict debts payment situation                               ||\n";
+		cout << "|| 2. Predict debts payment situation                              ||\n";
+		cout << "|| 3. Look up before months                                        ||\n";
 		cout << "|| 0. Return to main screen                                        ||\n";
 		cout << "||=================================o0o=============================||\n";
 		cout << "Select: ";
 
 		bool b = nhapSoNguyen(select);
-		while (!b || select < 0 || select > 2) {
+		while (!b || select < 0 || select > 3) {
 			if (!b)  cout << "Wrong format, try again: ";
 			else cout << "Limit exceeded, try again: ";
 			b = nhapSoNguyen(select);
@@ -262,24 +263,6 @@ void Menu3() {
 		//Xem tình hình thu - chi của tháng
 		case 1: {
 			f[index].PrintAllInformationInput(); 
-			cout << "Total incomes you have " << f[index].GetAccumulated() + f[index].GetOtherIncome() << endl;
-			cout << "Total expenses you pay " << f[index].GetTotalCost() << endl;
-
-			if (f[index].GetDiffernceIncomeAndExpense() > 0) {
-				cout << "This month, the incomes are more than the expenses, You get +" 
-					 << f[index].GetDiffernceIncomeAndExpense() << endl;
-			}
-			else {
-				if (f[index].GetTotalSalary() + f[index].GetOtherIncome() < f[index].GetTotalCost()) {
-					cout << "The incomes are less than the expenses, You get " << f[index].GetDiffernceIncomeAndExpense() << endl;
-					cout << "Warning! You don't have enough money to pay expenses, you go bankrupt!!!" << endl;
-					break;
-				}
-				else {
-					cout << "This month, the incomes are less than the expenses, You get " << f[index].GetDiffernceIncomeAndExpense() << endl;
-					cout << "You need " << abs(f[index].GetDiffernceIncomeAndExpense()) << " more from Salary to pay expenses" << endl;
-				}
-			}
 			break;
 		}
 		//Dự báo tình tình trả nợ dựa trên tháng mới nhất
@@ -413,6 +396,51 @@ void Menu3() {
 							<< " more to pay 1st debt" << endl;
 					}
 				}
+			}
+			break;
+		}
+		case 3: {
+			Date d;
+			Date start(1, 5, 2022);
+			int temp_index = 0;
+			int month_input;
+			int year_input;
+			cout << "Enter the month: ";
+			bool c = nhapSoNguyen(month_input);
+			while (!c || month_input < 1 || month_input > 12) {
+				if (!c)  cout << "Wrong format, try again: ";
+				else cout << "Limit exceeded, try again: ";
+				c = nhapSoNguyen(month_input);
+			}
+			cout << "Enter the year: ";
+			bool e = nhapSoNguyen(year_input);
+			while (!e) {
+				cout << "Wrong format, try again: ";
+				e = nhapSoNguyen(year_input);
+			}
+			d.Update(1, month_input, year_input);
+			if (d.Compare(cur) <= 0 && d.Compare(start) >= 0) {
+				temp_index = index - Date::MonthDiff(cur, d);
+
+				cout << "On " << d.GetMonth() << "/" << d.GetYear() << endl;
+				cout << "Information about Incomes and Expenses" << endl;
+				f[temp_index].PrintAllInformationInput();
+
+				cout << endl << "Information debts" << endl;
+				cout << "You have 2 debts: " << endl;
+				cout << "Debt 1: " << f[temp_index].GetDebts().GetTotalDebtD() << ", due date: " 
+					 << f[temp_index].GetDebts().GetDueDateDebtD().GetMonth() << "/" 
+					 << f[temp_index].GetDebts().GetDueDateDebtD().GetYear() << endl;
+				cout << "Debt 2: " << f[temp_index].GetDebts().GetTotalDebtS() << ", due date: " 
+					 << f[temp_index].GetDebts().GetDueDateDebtS().GetMonth() 
+					 << "/" << f[temp_index].GetDebts().GetDueDateDebtS().GetYear() << endl;
+
+				cout << endl << "Information savings account" << endl;
+				f[temp_index].GetAccount().PrintBooksInformation(d);
+				cout << "Total current balance you have: " << f[temp_index].GetAccount().GetTotalBalance(d) << endl;
+			}
+			else {
+				cout << "No data matching with this time information!" << endl;
 			}
 			break;
 		}

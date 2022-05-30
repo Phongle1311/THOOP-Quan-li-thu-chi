@@ -65,9 +65,11 @@ bool SavingsAccount::RemoveSavingsBook(Date cur) {
 }
 void SavingsAccount::PrintBooksInformation(Date cur) {
 	for (int i = 0; i < book_list.size(); i++) {
-		cout << i + 1 << "/ " << "balance : " << book_list[i].GetBalance(cur) << " ,term : " 
-			 << book_list[i].GetTerm() << " (month)" << " interest rate: " << book_list[i].GetInterestRate() 
-			 << " ,issued date: " << book_list[i].GetIssuedDate().GetMonth() << "/" << book_list[i].GetIssuedDate().GetYear() 
-			 << " ,due date: " << book_list[i].GetDueDate().GetMonth() << "/" << book_list[i].GetDueDate().GetYear() << endl;
+		cout << i + 1 << "/ " << "balance: " << book_list[i].GetBalance(cur) << ", term: "
+			<< book_list[i].GetTerm() << " (month)" << " interest rate: " << book_list[i].GetInterestRate()
+			<< ", issued date: " << book_list[i].GetIssuedDate().GetMonth() << "/" << book_list[i].GetIssuedDate().GetYear()
+			<< ", due date: " << book_list[i].GetDueDate().GetMonth() << "/" << book_list[i].GetDueDate().GetYear()
+			<< ", expect: " << book_list[i].GetPrincipal() + book_list[i].GetPrincipal()
+			* book_list[i].GetInterestRate() * book_list[i].GetTerm() << endl;
 	}
 }

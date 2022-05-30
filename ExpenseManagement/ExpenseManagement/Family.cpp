@@ -38,7 +38,7 @@ double Family::GetDeposit() {
 	// một phần lương để bù vào tiền lương còn lại bao nhiêu thì gửi tiết kiệm
 	double diff = GetDiffernceIncomeAndExpense();							
 	if (diff < 0) {
-		return  GetTotalSalary() + diff;
+		return  GetTotalSalary() + diff > 0 ? GetTotalSalary() + diff : 0;
 	}
 	return GetTotalSalary();												
 }
@@ -84,10 +84,27 @@ void Family::SetAccumulated(double money) {
 void Family::PrintAllInformationInput() {
 	cout << "Wife salary: " << wife_salary << endl;
 	cout << "Husband salary: " << husband_salary << endl;
-	cout << "Other income: " << other_income + accumulated << " (included +" << accumulated << " from last month)" << endl;
+	cout << "Other income: " << other_income << " (and +" << accumulated << " from last month)" << endl;
 	cout << "Bills: " << bills << endl;
 	cout << "Food expense: " << food_expense << endl;
 	cout << "Other expense: " << other_expense << endl;
+	cout << "Total incomes you have " << GetAccumulated() + GetOtherIncome() << endl;
+	cout << "Total expenses you pay " << GetTotalCost() << endl;
+
+	if (GetDiffernceIncomeAndExpense() > 0) {
+		cout << "This month, the incomes are more than the expenses, You get +"
+			<< GetDiffernceIncomeAndExpense() << endl;
+	}
+	else {
+		if (GetTotalSalary() + GetOtherIncome() < GetTotalCost()) {
+			cout << "The incomes are less than the expenses, You get " << GetDiffernceIncomeAndExpense() << endl;
+			cout << "Warning! You don't have enough money to pay expenses, you go bankrupt!!!" << endl;
+		}
+		else {
+			cout << "This month, the incomes are less than the expenses, You get " << GetDiffernceIncomeAndExpense() << endl;
+			cout << "You need " << abs(GetDiffernceIncomeAndExpense()) << " more from Salary to pay expenses" << endl;
+		}
+	}
 }
 void Family::SaveMoneyToFamilyAccount(double money) {
 	family_account += money;
