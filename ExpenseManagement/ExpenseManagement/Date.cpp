@@ -58,3 +58,8 @@ int Date::MonthDiff(Date after, Date before) {
 //	tm* ltm = localtime(&now);
 //	return Date(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday);
 //}
+
+void Date::IncreaseMonth() {
+	if (month < 12) month++;
+	else year++, month = 1;
+}
