@@ -1,4 +1,4 @@
-﻿#include "Family.h"
+#include "Family.h"
 #include <iostream>
 #include <cmath>
 using namespace std;
@@ -32,15 +32,15 @@ double Family::GetTotalCost() {
 double Family::GetTotalSalary() {
 	return wife_salary + husband_salary;
 }
-double Family::GetDeposit() {												
+double Family::GetDeposit() {
 	// chỉ dùng lương để trả nợ, dùng thu nhập khác tháng hiện tại và tiền tích lũy được 
 	// của tháng trước để trả chi phí, nếu thu nhập khác không đủ trả chi phí thì dùng 
 	// một phần lương để bù vào tiền lương còn lại bao nhiêu thì gửi tiết kiệm
-	double diff = GetDiffernceIncomeAndExpense();							
+	double diff = GetDiffernceIncomeAndExpense();
 	if (diff < 0) {
 		return  GetTotalSalary() + diff > 0 ? GetTotalSalary() + diff : 0;
 	}
-	return GetTotalSalary();												
+	return GetTotalSalary();
 }
 double Family::GetDiffernceIncomeAndExpense() {
 	return GetOtherIncome() + accumulated - GetTotalCost();
@@ -134,4 +134,16 @@ Loan Family::GetDebts() {
 }
 SavingsAccount Family::GetAccount() {
 	return bank_account;
+}
+
+void Family::Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts) {
+	this->wife_salary = wife_salary;
+	this->husband_salary = husband_salary;
+	this->other_income = other_income;
+	this->bills = bills;
+	this->food_expense = food_expense;
+	this->other_expense = other_expense;
+	this->accumulated = accumulated;
+	this->bank_account = bank_account;
+	this->family_account = family_account;
 }
