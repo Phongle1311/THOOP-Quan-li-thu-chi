@@ -27,6 +27,8 @@ public:
 	bool AddSavingsBook(double money, int term, double interest_rate, Date cur);
 	//Xóa những sổ đã hết kỳ hạn
 	bool RemoveSavingsBook(Date cur);	
+	//Cập nhật số dư, tiền lãi
+	void UpdateStatusSavingsBook(Date cur);
 	//In thông tin của sổ tiết kiệm
 	void PrintBooksInformation(Date cur);
 };

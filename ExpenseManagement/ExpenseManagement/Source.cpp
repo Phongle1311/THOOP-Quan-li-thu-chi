@@ -103,6 +103,7 @@ void MainMenu() {
 void Menu1() {
 	int select = 0;
 	int select2 = 0;
+	int select3 = 0;
 	char ctmp;
 
 	while (true) {
@@ -169,8 +170,37 @@ void Menu1() {
 		c = nhapSoNguyen(select2);
 	}
 	if (select2 == 1) {
-		if (f[index].GetDeposit() > 0) {							
-			f[index].MakeDepositToAccount(f[index].GetDeposit(), cur);
+		if (f[index].GetDeposit() > 0) {	
+			double money = 0;
+			//Lấy ra các số dư đã qua ngày đảo hạn
+			for (int i = 0; i < f[index].GetAccount().GetNumberBooks(); i++) {
+				if (f[index].GetAccount().GetBook(i).IsDueDate(cur)) {
+					money += f[index].GetAccount().GetBook(i).GetBalance(cur);
+				}
+			}
+			if (money > 0) {
+				SavingsAccount sa = f[index].GetAccount();
+				sa.RemoveSavingsBook(cur);
+				cout << "There are " << money << " from the due books. Do you want to combine them into this month?" << endl;
+				cout << "1. Yes" << endl;
+				cout << "2. No (save " << money << " to family account)" << endl;
+				cout << "Select: ";
+				bool d = nhapSoNguyen(select3);
+				while (!d || select3 < 1 || select3 > 2) {
+					if (!d)  cout << "Wrong format, try again: ";
+					else cout << "Limit exceeded, try again: ";
+					d = nhapSoNguyen(select3);
+				}
+				if (select3 == 1) {
+					f[index].SetAccount(sa);
+				}
+				else {
+					f[index].SaveMoneyToFamilyAccount(money);
+					f[index].SetAccount(sa);
+					money = 0;
+				}
+			}
+			f[index].MakeDepositToAccount(f[index].GetDeposit() + money, cur);
 			cout << "Make deposit successfully" << endl;
 		}
 		else {
@@ -422,7 +452,7 @@ void Menu3() {
 			if (d.Compare(cur) <= 0 && d.Compare(start) >= 0) {
 				temp_index = index - Date::MonthDiff(cur, d);
 
-				cout << "On " << d.GetMonth() << "/" << d.GetYear() << endl;
+				cout << endl << "On " << d.GetMonth() << "/" << d.GetYear() << endl;
 				cout << "Information about Incomes and Expenses" << endl;
 				f[temp_index].PrintAllInformationInput();
 

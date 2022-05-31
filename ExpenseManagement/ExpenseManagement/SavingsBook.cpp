@@ -36,8 +36,15 @@ double SavingsBook::GetInterest(Date cur) {
 Date SavingsBook::GetDueDate() {
 	Date due_date;
 	if (issued_date.GetMonth() + term > 12) {
-		due_date.SetMonth((issued_date.GetMonth() + term) % 12);
-		due_date.SetYear(issued_date.GetYear() + (issued_date.GetMonth() + term) / 12);
+		if ((issued_date.GetMonth() + term) % 12 == 0) {
+			due_date.SetMonth(12);
+			due_date.SetYear(issued_date.GetYear() + (issued_date.GetMonth() + term) / 12 - 1);
+		}
+		else {
+			due_date.SetMonth((issued_date.GetMonth() + term) % 12);
+			due_date.SetYear(issued_date.GetYear() + (issued_date.GetMonth() + term) / 12);
+		}
+		
 	}
 	else {
 		due_date.SetMonth(issued_date.GetMonth() + term);

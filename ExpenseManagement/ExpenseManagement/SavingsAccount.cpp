@@ -7,11 +7,11 @@ SavingsAccount::~SavingsAccount() {
 	book_list.clear();
 }
 double SavingsAccount::GetTotalBalance(Date cur) {
-	RemoveSavingsBook(cur);
+	UpdateStatusSavingsBook(cur);
 	return total_balance;
 }
 double SavingsAccount::GetTotalInterest(Date cur) {
-	RemoveSavingsBook(cur);
+	UpdateStatusSavingsBook(cur);
 	return total_interest;
 }
 int SavingsAccount::GetNumberBooks() {
@@ -50,12 +50,19 @@ bool SavingsAccount::AddSavingsBook(double money, int term, double interest_rate
 	book_list.push_back(book);
 	return true;
 }
-bool SavingsAccount::RemoveSavingsBook(Date cur) {
-	int count = 0;
+void SavingsAccount::UpdateStatusSavingsBook(Date cur) {
 	for (int i = 0; i < book_list.size(); i++) {
 		if (book_list[i].IsDueDate(cur)) {
 			total_balance += book_list[i].GetInterest(cur);	 //Lấy ra lãi của những sổ đã hết kỳ hạn
 			total_interest += book_list[i].GetInterest(cur);
+		}
+	}
+}
+bool SavingsAccount::RemoveSavingsBook(Date cur) {
+	int count = 0;
+	for (int i = 0; i < book_list.size(); i++) {
+		if (book_list[i].IsDueDate(cur)) {
+			total_balance -= book_list[i].GetPrincipal();
 			book_list.erase(book_list.begin() + i);			 //Xóa sổ tiết kiệm
 			count++;
 			i--;
