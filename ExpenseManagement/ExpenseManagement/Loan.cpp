@@ -1,4 +1,4 @@
-﻿#include "Loan.h"
+#include "Loan.h"
 Loan::Loan() {
 	START_DAY.Update(1, 5, 2022);
 	debtS = 0;
@@ -8,7 +8,7 @@ Loan::Loan() {
 	durationD = 0;
 }
 
-Loan::Loan(double debtS, double durationS, double interestRateS, double debtD, double durationD) {
+Loan::Loan(double debtS, int durationS, double interestRateS, double debtD, int durationD) {
 	START_DAY.Update(1, 5, 2022);
 	this->debtS = debtS;
 	this->durationS = durationS;
@@ -104,7 +104,7 @@ Date Loan::GetDueDateDebtS() {
 		due_date.SetYear(START_DAY.GetYear());
 	}
 	return due_date;
-} 
+}
 
 Date Loan::GetDueDateDebtD() {
 	Date due_date;
@@ -117,4 +117,20 @@ Date Loan::GetDueDateDebtD() {
 		due_date.SetYear(START_DAY.GetYear() + (START_DAY.GetMonth() + durationD) / 12);
 	}
 	return due_date;
+}
+
+void Loan::SetDebtS(double DebtS) {
+	this->debtS = DebtS;
+}
+void Loan::SetDebtD(double DebtD) {
+	this->debtD = DebtD;
+}
+void Loan::SetDurationS(int duration) {
+	durationS = duration;
+}
+void Loan::SetDurationD(int duration) {
+	durationD = duration;
+}
+void Loan::SetInterestRateS(double rateS) {
+	interestRateS = rateS;
 }
