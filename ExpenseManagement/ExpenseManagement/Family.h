@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "SavingsAccount.h"
 #include "Loan.h"
 //Thu chi hằng tháng
@@ -30,13 +30,13 @@ private:
 public:
 	Family();
 	Family(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts);
-	
+
 	//Lấy ra thu nhập khác
-	double GetOtherIncome();	
+	double GetOtherIncome();
 	//Lấy ra tổng chi phí
 	double GetTotalCost();
 	//Lấy ra phần tiền gửi vào tiết kiệm
-	double GetDeposit();	
+	double GetDeposit();
 	//Lấy ra tổng tiền lương của hai vợ chồng
 	double GetTotalSalary();
 	//Lấy ra hiệu thu - chi
@@ -44,27 +44,27 @@ public:
 	//Lấy ra tiền tích lũy dư được từ tháng trước
 	double GetAccumulated();
 	//Lấy ra tiền tích lũy được của tháng này để dành cho tháng sau
-	double GetAccumulateForNextMonth();	
+	double GetAccumulateForNextMonth();
 	//Lấy ra tiền trong tài khoản gia đình
 	double GetFamilyAccount();
 	//Gửi tiền vào ngân hàng (chưa biết trước kì hạn, lãi suất)
 	bool MakeDepositToAccount(double money, Date cur);
 	//Gửi tiền vào ngân hàng (đã biết trước kì hạn, lãi suất)
 	bool MakeDepositToAccount(double money, int term, double interest_rate, Date cur);
-	
+
 	//Nhập lương chồng	
-	void HusbandSalaryInput();	
+	void HusbandSalaryInput();
 	//Nhập lương vợ
-	void WifeSalaryInput();	
+	void WifeSalaryInput();
 	//Nhập thu nhập khác
 	void OtherIncomeInput();
 	//Nhập chi sinh hoạt (điện, nước...)
-	void BillsInput();		
+	void BillsInput();
 	//Nhập chi phí ăn uống
-	void FoodExpenseInput();	
+	void FoodExpenseInput();
 	//Nhập chi phí khác
 	void OtherExpenseInput();
-	
+
 	//Cập nhật tiền tích lũy của tháng trước
 	void SetAccumulated(double money);
 	//Cập nhật khoản nợ
@@ -80,4 +80,7 @@ public:
 	Loan GetDebts();
 	//Lấy ra tài khoản ngân hàng
 	SavingsAccount GetAccount();
+
+	void Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts);
+
 };
