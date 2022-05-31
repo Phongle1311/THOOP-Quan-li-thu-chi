@@ -1,4 +1,4 @@
-﻿#include "Header.h"
+#include "Header.h"
 #include "Family.h"
 #include <cmath>
 #include <fstream>
@@ -88,7 +88,7 @@ void MainMenu() {
 			f[index + 1].SetAccount(f[index].GetAccount());                         //Cập nhật các thông tin thẻ ngân hàng cho tháng sau
 			f[index + 1].SetDebts(f[index].GetDebts());                             //Cập nhật các thông tin nợ cho tháng sau
 			index++;
-			cur.Update(1, cur.GetMonth() + 1, cur.GetYear());
+			cur.IncreaseMonth();
 			break;
 		}
 		default:
@@ -170,7 +170,7 @@ void Menu1() {
 		c = nhapSoNguyen(select2);
 	}
 	if (select2 == 1) {
-		if (f[index].GetDeposit() > 0) {	
+		if (f[index].GetDeposit() > 0) {
 			double money = 0;
 			//Lấy ra các số dư đã qua ngày đảo hạn
 			for (int i = 0; i < f[index].GetAccount().GetNumberBooks(); i++) {
@@ -257,7 +257,7 @@ void Menu2() {
 			debt.EnterInterRateDebtD();
 			break;
 		}
-		
+
 		std::cout << "Press any key to return!\n";
 		ctmp = _getch();
 	}
@@ -290,12 +290,12 @@ void Menu3() {
 		system("cls");
 		switch (select)
 		{
-		//Xem tình hình thu - chi của tháng
+			//Xem tình hình thu - chi của tháng
 		case 1: {
-			f[index].PrintAllInformationInput(); 
+			f[index].PrintAllInformationInput();
 			break;
 		}
-		//Dự báo tình tình trả nợ dựa trên tháng mới nhất
+			  //Dự báo tình tình trả nợ dựa trên tháng mới nhất
 		case 2: {
 			int duration_d = f[index].GetDebts().GetDurationD();
 			int duration_s = f[index].GetDebts().GetDurationS();
@@ -373,7 +373,7 @@ void Menu3() {
 					}
 					else {
 						cout << "Regretfully, You need " << abs(total2 - (f[index].GetDebts().GetTotalDebtS() + f[index].GetDebts().GetTotalDebtD()))
-							 << " more to pay 2nd debt" << endl;
+							<< " more to pay 2nd debt" << endl;
 					}
 				}
 				else {
@@ -458,12 +458,12 @@ void Menu3() {
 
 				cout << endl << "Information debts" << endl;
 				cout << "You have 2 debts: " << endl;
-				cout << "Debt 1: " << f[temp_index].GetDebts().GetTotalDebtD() << ", due date: " 
-					 << f[temp_index].GetDebts().GetDueDateDebtD().GetMonth() << "/" 
-					 << f[temp_index].GetDebts().GetDueDateDebtD().GetYear() << endl;
-				cout << "Debt 2: " << f[temp_index].GetDebts().GetTotalDebtS() << ", due date: " 
-					 << f[temp_index].GetDebts().GetDueDateDebtS().GetMonth() 
-					 << "/" << f[temp_index].GetDebts().GetDueDateDebtS().GetYear() << endl;
+				cout << "Debt 1: " << f[temp_index].GetDebts().GetTotalDebtD() << ", due date: "
+					<< f[temp_index].GetDebts().GetDueDateDebtD().GetMonth() << "/"
+					<< f[temp_index].GetDebts().GetDueDateDebtD().GetYear() << endl;
+				cout << "Debt 2: " << f[temp_index].GetDebts().GetTotalDebtS() << ", due date: "
+					<< f[temp_index].GetDebts().GetDueDateDebtS().GetMonth()
+					<< "/" << f[temp_index].GetDebts().GetDueDateDebtS().GetYear() << endl;
 
 				cout << endl << "Information savings account" << endl;
 				f[temp_index].GetAccount().PrintBooksInformation(d);
@@ -532,3 +532,87 @@ void Menu4() {
 		ctmp = _getch();
 	}
 }
+
+void readDatabase(const char* fileName) {
+	fstream fi(fileName, ios::in);
+
+	string line, word;
+	vector<string> row;
+
+	// Đọc Nợ 
+	getline(fi, line);
+	row.clear();
+	stringstream s(line);
+	while (getline(s, word, ',')) {
+		row.push_back(word);
+	}
+	Loan debt(stod(row[0]), stoi(row[1]), stod(row[2]), stod(row[3]), stoi(row[4]));
+
+
+	// Các dòng còn lại: dữ liệu mỗi tháng: Lương chồng, lương vợ, thu nhập khác
+	// hóa đơn, ăn uống, chi tiêu khác; gửi tiết kiệm (0/1: không gửi/gửi),
+	// kì hạn, lãi suất; lãi suất deptD
+	int id = 0;
+	double wife_salary;
+	double husband_salary;
+	double other_income;
+	double bills;
+	double food_expense;
+	double other_expense;
+	double family_account;
+	double accumulated = 0;
+	SavingsAccount bank_account;
+
+	while (getline(fi, line)) {
+		row.clear();
+		stringstream s(line);
+		while (getline(s, word, ',')) {
+			row.push_back(word);
+		}
+
+		 wife_salary = stod(row[0]);
+		 husband_salary = stod(row[1]);
+		 other_income = stod(row[2]);
+		 bills = stod(row[4]);
+		 food_expense = stod(row[5]);
+		 other_expense = stod(row[6]);
+		if (row[7][0] == '0') {
+			family_account;
+			// 1
+			// gửi vào tiền tiết kiệm gia đình
+		}
+		else {
+			// 2
+			// Nếu gửi tiết kiệm
+			// kì hạn = stoi(row[7]);
+			// Lãi suất = stoi(row[8]);
+		}
+		 
+		
+
+		// lãi suất nợ linh động = stod(row[9]);
+		f[id].Update( wife_salary,  husband_salary,  other_income,  bills,  food_expense,  other_expense,  family_account,  accumulated, bank_account, debt);
+		
+		// 3
+		// Code Tính tiền tích lũy tháng sau;
+		accumulated = 0;
+		id++;
+	}
+	fi.close();
+
+	// 4
+	// chỉnh lại thời gian cur 
+}
+
+void writeOneMonthFile(const char* fileName, int id) {
+	fstream fo(fileName, ios::out);
+	// từ từ viết
+	fo.close();
+}
+
+void writeAllMonthFile(const char* fileName) {
+	fstream fo(fileName, ios::out);
+	// từ từ viết
+	fo.close();
+}
+
