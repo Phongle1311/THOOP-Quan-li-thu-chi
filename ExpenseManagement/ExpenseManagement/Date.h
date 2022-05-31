@@ -22,10 +22,10 @@ public:
 	void Update(int day, int month, int year);
 
 	// 1. greater 0. equal -1. less
-	int Compare(Date& d);	
+	int Compare(Date& d);
 	// the number of months
-	static int MonthDiff(Date after, Date before);	
+	static int MonthDiff(Date after, Date before);
 	// current time of system
-	/*static Date Current();*/							
+	/*static Date Current();*/
+	void IncreaseMonth();
 };
-
