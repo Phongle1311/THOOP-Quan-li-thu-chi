@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Date.h"
 #include <vector>
 #include <iostream>
@@ -24,7 +24,7 @@ public:
 	//Hàm khởi tạo mặc định
 	Loan();
 	//Hàm khởi tạo đầy đủ tham số
-	Loan(double debtS, double durationS, double interestRateS, double debtD, double durationD);
+	Loan(double debtS, int durationS, double interestRateS, double debtD, int durationD);
 
 	//Hàm nhập thông tin (nợ gốc, kì hạn, lãi xuất (lãi/tháng)) cho lãi cố định
 	void EnterInforDebtS();
@@ -50,4 +50,10 @@ public:
 	Date GetDueDateDebtD();
 	//Lấy ra ngày đảo hạn của nợ cố định
 	Date GetDueDateDebtS();
+
+	void SetDebtS(double DebtS);
+	void SetDebtD(double DebtD);
+	void SetDurationS(int duration);
+	void SetDurationD(int duration);
+	void SetInterestRateS(double rateS);
 };
