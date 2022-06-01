@@ -1,4 +1,4 @@
-#include "Family.h"
+﻿#include "Family.h"
 #include <iostream>
 #include <cmath>
 using namespace std;
@@ -19,9 +19,10 @@ Family::Family(double wife_salary, double husband_salary, double other_income, d
 	this->bills = bills;
 	this->food_expense = food_expense;
 	this->other_expense = other_expense;
+	this->family_account = family_account;
 	this->accumulated = accumulated;
 	this->bank_account = bank_account;
-	this->family_account = family_account;
+	this->debts = debts;
 }
 double Family::GetOtherIncome() {
 	return other_income;
@@ -136,14 +137,12 @@ SavingsAccount Family::GetAccount() {
 	return bank_account;
 }
 
-void Family::Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts) {
+void Family::Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, Loan debts) {
 	this->wife_salary = wife_salary;
 	this->husband_salary = husband_salary;
 	this->other_income = other_income;
 	this->bills = bills;
 	this->food_expense = food_expense;
 	this->other_expense = other_expense;
-	this->accumulated = accumulated;
-	this->bank_account = bank_account;
-	this->family_account = family_account;
+	this->debts = debts;
 }

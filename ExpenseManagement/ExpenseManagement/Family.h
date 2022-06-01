@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "SavingsAccount.h"
 #include "Loan.h"
 //Thu chi hằng tháng
@@ -81,6 +81,7 @@ public:
 	//Lấy ra tài khoản ngân hàng
 	SavingsAccount GetAccount();
 
-	void Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, double family_account, double accumulated, SavingsAccount bank_account, Loan debts);
+	//Cập nhật lại thông tin của gia đình đó
+	void Update(double wife_salary, double husband_salary, double other_income, double bills, double food_expense, double other_expense, Loan debts);
 
 };

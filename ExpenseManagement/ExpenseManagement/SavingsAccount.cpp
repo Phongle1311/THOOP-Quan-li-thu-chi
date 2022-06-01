@@ -48,6 +48,7 @@ bool SavingsAccount::AddSavingsBook(double money, int term, double interest_rate
 	book.SetInterestRate(interest_rate);
 	book.SetIssuedDate(cur);
 	book_list.push_back(book);
+	total_balance += money;
 	return true;
 }
 void SavingsAccount::UpdateStatusSavingsBook(Date cur) {

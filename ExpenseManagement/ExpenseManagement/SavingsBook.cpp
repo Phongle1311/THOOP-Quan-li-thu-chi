@@ -78,21 +78,11 @@ void SavingsBook::TermInput() {
 }
 void SavingsBook::InterestInput() {
 	double interest_rate_input;
-	if (term <= 6) {
-		cout << "Enter monthly interest rate (0.004 - 0.01): ";		     // Đặt phạm vi nhất định (theo tháng)
+	cout << "Enter monthly interest rate (0.004 - 0.01): ";			// Đặt phạm vi nhất định (theo tháng)
+	cin >> interest_rate_input;
+	while (interest_rate_input < 0.004 || interest_rate_input > 0.01) {
+		cout << "Limit exceeded, try again: ";
 		cin >> interest_rate_input;
-		while (interest_rate_input < 0.004 || interest_rate_input > 0.01) {
-			cout << "Limit exceeded, try again: ";
-			cin >> interest_rate_input;
-		}
-	}
-	else {
-		cout << "Enter monthly interest rate (0.004 - 0.01): ";			// Đặt phạm vi nhất định (theo tháng)
-		cin >> interest_rate_input;
-		while (interest_rate_input < 0.004 || interest_rate_input > 0.01) {
-			cout << "Limit exceeded, try again: ";
-			cin >> interest_rate_input;
-		}
 	}
 	interest_rate = interest_rate_input;
 }

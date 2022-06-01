@@ -17,5 +17,5 @@ void Menu3();
 void Menu4();
 void readDatabase(const char* fileName);
 void writeOneMonthFile(const char* fileName, int id);
-void writeAllMonthFile(const char* fileName); 
+void writeAllMonthFile(const char* fileName);
 void writeDatabase(const char* fileName);

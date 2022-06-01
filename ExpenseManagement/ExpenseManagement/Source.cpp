@@ -1,4 +1,4 @@
-#include "Header.h"
+﻿#include "Header.h"
 #include "Family.h"
 #include <cmath>
 #include <fstream>
@@ -535,19 +535,22 @@ void Menu4() {
 
 void readDatabase(const char* fileName) {
 	fstream fi(fileName, ios::in);
+	//Kiểm tra file có trống hây không, nếu trống thì khỏi đọc
+	if (fi.peek() == std::ifstream::traits_type::eof()) {
+		return;
+	}
 
 	string line, word;
 	vector<string> row;
 
-	// Đọc Nợ 
+	//Dòng đầu để đọc thông tin về các khoản nợ
 	getline(fi, line);
 	row.clear();
 	stringstream s(line);
 	while (getline(s, word, ',')) {
 		row.push_back(word);
 	}
-	Loan debt(stod(row[0]), stoi(row[1]), stod(row[2]), stod(row[3]), stoi(row[4]));
-
+	Loan debt(stod(row[0]), stoi(row[1]), stod(row[2]), stoi(row[3]), stod(row[4]));
 
 	// Các dòng còn lại: dữ liệu mỗi tháng: Lương chồng, lương vợ, thu nhập khác
 	// hóa đơn, ăn uống, chi tiêu khác; gửi tiết kiệm (0/1: không gửi/gửi),
@@ -559,8 +562,9 @@ void readDatabase(const char* fileName) {
 	double bills;
 	double food_expense;
 	double other_expense;
-	double family_account;
 	double accumulated = 0;
+	double family_account = 0;
+	
 	SavingsAccount bank_account;
 
 	while (getline(fi, line)) {
@@ -570,38 +574,52 @@ void readDatabase(const char* fileName) {
 			row.push_back(word);
 		}
 
-		 wife_salary = stod(row[0]);
-		 husband_salary = stod(row[1]);
-		 other_income = stod(row[2]);
-		 bills = stod(row[4]);
-		 food_expense = stod(row[5]);
-		 other_expense = stod(row[6]);
-		if (row[7][0] == '0') {
-			family_account;
-			// 1
-			// gửi vào tiền tiết kiệm gia đình
+		wife_salary = stod(row[0]);
+		husband_salary = stod(row[1]);
+		other_income = stod(row[2]);
+		bills = stod(row[3]);
+		food_expense = stod(row[4]);
+		other_expense = stod(row[5]);
+		debt.SetInterestRateD(stod(row[9]));
+
+		f[index].Update(wife_salary, husband_salary, other_income, bills, food_expense, other_expense, debt);
+		if (row[6][0] == '0') {
+			f[index].SaveMoneyToFamilyAccount(f[index].GetDeposit());
 		}
 		else {
-			// 2
-			// Nếu gửi tiết kiệm
-			// kì hạn = stoi(row[7]);
-			// Lãi suất = stoi(row[8]);
-		}
-		 
-		
+			int term_temp = stoi(row[7]);
+			double interest_rate_temp = stod(row[8]);
+			double money = 0;
 
-		// lãi suất nợ linh động = stod(row[9]);
-		f[id].Update( wife_salary,  husband_salary,  other_income,  bills,  food_expense,  other_expense,  family_account,  accumulated, bank_account, debt);
-		
-		// 3
-		// Code Tính tiền tích lũy tháng sau;
-		accumulated = 0;
-		id++;
+			//Lấy ra các số dư đã qua ngày đảo hạn
+			for (int i = 0; i < f[index].GetAccount().GetNumberBooks(); i++) {
+				if (f[index].GetAccount().GetBook(i).IsDueDate(cur)) {
+					money += f[index].GetAccount().GetBook(i).GetBalance(cur);
+				}
+			}
+			if (money > 0) {
+				SavingsAccount sa = f[index].GetAccount();
+				sa.RemoveSavingsBook(cur);
+				if (row[10][0] == '0') {
+					f[index].SaveMoneyToFamilyAccount(money);
+					f[index].SetAccount(sa);
+					money = 0;
+				}
+				else {
+					f[index].SetAccount(sa);
+				}
+			}
+			f[index].MakeDepositToAccount(f[index].GetDeposit() + money, term_temp, interest_rate_temp, cur);
+		}
+
+		f[index + 1].SaveMoneyToFamilyAccount(f[index].GetFamilyAccount());     //Cập nhật tiền tài khoản gia đình cho tháng sau
+		f[index + 1].SetAccumulated(f[index].GetAccumulateForNextMonth());		//Cập nhật tiền tích lũy cho tháng sau
+		f[index + 1].SetAccount(f[index].GetAccount());                         //Cập nhật các thông tin thẻ ngân hàng cho tháng sau
+		f[index + 1].SetDebts(f[index].GetDebts());
+		index++;
+		cur.IncreaseMonth();
 	}
 	fi.close();
-
-	// 4
-	// chỉnh lại thời gian cur 
 }
 
 void writeOneMonthFile(const char* fileName, int id) {
@@ -615,4 +633,3 @@ void writeAllMonthFile(const char* fileName) {
 	// từ từ viết
 	fo.close();
 }
-
