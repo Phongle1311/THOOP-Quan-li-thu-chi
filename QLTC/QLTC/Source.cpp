@@ -1,4 +1,4 @@
-﻿#include "Header.h"
+#include "Header.h"
 #include "Family.h"
 #include <cmath>
 #include <fstream>
@@ -323,6 +323,7 @@ void Menu3() {
 			cout << "Estimated 1st debt per month is: " << monthly_debt_d << endl;
 			cout << "Estimated 2nd debt per month is: " << monthly_debt_s << endl;
 			cout << "Total estimated debts per month you have to pay is: " << monthly_debt_s + monthly_debt_d << endl;
+			//Nếu Tổng lương và thu nhập khác không đủ chi trả cho chi phí thì thông báo phá sản
 			if (f[index].GetTotalSalary() + f[index].GetOtherIncome() < f[index].GetTotalCost()) {
 				cout << "Warning! You don't have enough money to pay expenses, you go bankrupt!!!" << endl;
 				break;
@@ -333,21 +334,28 @@ void Menu3() {
 				cout << "Total balance in family account: " << balance_family << endl;
 				cout << "Total amount of money you can have in this month to pay debts (excluding interest): " << accumulate + deposit + balance_family << endl;
 				cout << endl << "Prediction: " << endl;
+				//TH1: Nợ 1 (linh động) có ngày đến hạn trước nợ 2 (cố định)
 				if (due_date_debt_d.Compare(due_date_debt_s) == -1) {
 					// Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu tiên
 					Date cur1(1, cur.GetMonth() + 1, cur.GetYear());
 					Family f1 = f[index];
 					SavingsBook sb = f1.GetAccount().GetBook(f1.GetAccount().GetNumberBooks() - 1);
+					//Thực thi việc gửi ngân hàng các tháng còn lại với số tiền gửi dựa trên tháng mới nhất 
 					while (cur1.Compare(due_date_debt_d) < 0) {
-						f1.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur1);
+						//Nếu tháng mới nhất nếu ko gửi thì 'deposit' sẽ là 0. Do đó khi gửi ngân hàng với số tiền là 0 sẽ coi là không gửi
+						f1.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur1); 
 						cur1.Update(1, cur1.GetMonth() + 1, cur1.GetYear());
 					}
 					// f1.GetAccount().PrintBooksInformation(cur1);
 					double total1 = 0;
+					//Lấy ra toàn bộ lãi có được theo ước tính cho đến ngày đảo hạn nợ 1
 					double interest1 = f1.GetAccount().GetTotalInterest(cur1);
+					//Lấy ra tổng tiền có được (không bao gồm lãi) từ tháng 5/2022 đến tháng mới nhất đã có dữ liệu
 					for (int i = 0; i < index; i++) {
 						total1 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
 					}
+					//Lấy ra tổng tiền có được ở mọi nguồn cho đến hạn nợ 1 bằng các cộng thêm tổng tiền ước tính dựa trên dữ liệu 
+					//tháng mới nhất và tổng lãi
 					total1 += total_month * Date::MonthDiff(due_date_debt_d, cur) + interest1;
 
 					// Dự đoán nợ 1
@@ -362,16 +370,21 @@ void Menu3() {
 					}
 
 					// Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu thứ hai
-					while (cur1.Compare(due_date_debt_s) < 0) {
+					while (cur1.Compare(due_date_debt_s) < 0) { 
+						//Nếu tháng mới nhất nếu ko gửi thì 'deposit' sẽ là 0. Do đó khi gửi ngân hàng với số tiền là 0 sẽ coi là không gửi
 						f1.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur1);
 						cur1.Update(1, cur1.GetMonth() + 1, cur1.GetYear());
 					}
 					// f1.GetAccount().PrintBooksInformation(cur1);
 					double total2 = 0;
+					//Lấy ra toàn bộ lãi có được theo ước tính cho đến ngày đảo hạn nợ 2
 					double interest2 = f1.GetAccount().GetTotalInterest(cur1);
+					//Lấy ra tổng tiền có được (không bao gồm lãi) từ tháng 5/2022 đến tháng mới nhất đã có dữ liệu
 					for (int i = 0; i < index; i++) {
 						total2 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
 					}
+					//Lấy ra tổng tiền có được ở mọi nguồn cho đến hạn nợ 2 bằng các cộng thêm tổng tiền ước tính dựa trên dữ liệu 
+					//tháng mới nhất và tổng lãi
 					total2 += total_month * Date::MonthDiff(due_date_debt_s, cur) + interest2;
 
 					// Dự đoán nợ 2
@@ -385,20 +398,27 @@ void Menu3() {
 							<< " more to pay 2nd debt" << endl;
 					}
 				}
+				//TH2: Nợ 1 (linh động) có ngày đến hạn sau nợ 2 (cố định)
 				else {
 					// Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu thứ hai
 					Date cur2(1, cur.GetMonth() + 1, cur.GetYear());
 					Family f2 = f[index];
 					SavingsBook sb = f2.GetAccount().GetBook(f2.GetAccount().GetNumberBooks() - 1);
+					//Thực thi việc gửi ngân hàng các tháng còn lại với số tiền gửi dựa trên tháng mới nhất 
 					while (cur2.Compare(due_date_debt_s) < 0) {
+						//Nếu tháng mới nhất nếu ko gửi thì 'deposit' sẽ là 0. Do đó khi gửi ngân hàng với số tiền là 0 sẽ coi là không gửi
 						f2.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur2);
 						cur2.Update(1, cur2.GetMonth() + 1, cur2.GetYear());
 					}
 					double total2 = 0;
+					//Lấy ra toàn bộ lãi có được theo ước tính cho đến ngày đảo hạn nợ 2
 					double interest2 = f2.GetAccount().GetTotalInterest(cur2);
+					//Lấy ra tổng tiền có được (không bao gồm lãi) từ tháng 5/2022 đến tháng mới nhất đã có dữ liệu
 					for (int i = 0; i < index; i++) {
 						total2 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
 					}
+					//Lấy ra tổng tiền có được ở mọi nguồn cho đến hạn nợ 2 bằng các cộng thêm tổng tiền ước tính dựa trên dữ liệu 
+					//tháng mới nhất và tổng lãi
 					total2 += total_month * Date::MonthDiff(due_date_debt_s, cur) + interest2;
 
 					// Dự đoán nợ 2
@@ -414,14 +434,19 @@ void Menu3() {
 
 					// Ước tính tiền lãi sẽ có từ việc gửi tiết kiệm được từ thời điểm hiện tại đến ngày trả nợ đầu tiên
 					while (cur2.Compare(due_date_debt_d) < 0) {
+						//Nếu tháng mới nhất nếu ko gửi thì 'deposit' sẽ là 0. Do đó khi gửi ngân hàng với số tiền là 0 sẽ coi là không gửi
 						f2.MakeDepositToAccount(deposit, sb.GetTerm(), sb.GetInterestRate(), cur2);
 						cur2.Update(1, cur2.GetMonth() + 1, cur2.GetYear());
 					}
 					double total1 = 0;
+					//Lấy ra toàn bộ lãi có được theo ước tính cho đến ngày đảo hạn nợ 1
 					double interest1 = f2.GetAccount().GetTotalInterest(cur2);
+					//Lấy ra tổng tiền có được (không bao gồm lãi) từ tháng 5/2022 đến tháng mới nhất đã có dữ liệu
 					for (int i = 0; i < index; i++) {
 						total1 += f[i].GetAccumulateForNextMonth() + f[i].GetDeposit();
 					}
+					//Lấy ra tổng tiền có được ở mọi nguồn cho đến hạn nợ 1 bằng các cộng thêm tổng tiền ước tính dựa trên dữ liệu 
+					//tháng mới nhất và tổng lãi
 					total1 += total_month * Date::MonthDiff(due_date_debt_d, cur) + interest1;
 
 					// Dự đoán nợ 1
@@ -722,10 +747,10 @@ void writeOneMonthFile(const char* fileName, int id) {
 
 	fo << "\n>>> DEPT:\n";
 	fo << "No,Type,Original Debt,Due Date\n";
-	fo << " + Debt 1:,(Dynamic Debt)," << f[id].GetDebts().GetTotalDebtD()
+	fo << " + Debt 1:,(Dynamic Debt)," << f[id].GetDebts().GetTotalDebtD()<<','
 		<< f[id].GetDebts().GetDueDateDebtD().GetMonth() << "/"
 		<< f[id].GetDebts().GetDueDateDebtD().GetYear() << '\n';
-	fo << " + Debt 2:,(Static Debt)," << f[id].GetDebts().GetTotalDebtS()
+	fo << " + Debt 2:,(Static Debt)," << f[id].GetDebts().GetTotalDebtS()<<','
 		<< f[id].GetDebts().GetDueDateDebtS().GetMonth()
 		<< "/" << f[id].GetDebts().GetDueDateDebtS().GetYear() << '\n';
 	
