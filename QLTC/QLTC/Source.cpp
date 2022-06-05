@@ -70,7 +70,7 @@ void MainMenu() {
 				debt2 = debts.GetDebtS();
 			}
 
-			if (cur.Compare(due_date_2) >= 0) {
+			if (cur.Compare(due_date_2) > 0) {
 				cout << "RESULT" << endl << endl;
 				cout << "Total 1st debt is: " << f[index].GetDebts().GetTotalDebtD() << endl;
 				cout << "Total 2nd debt is: " << f[index].GetDebts().GetTotalDebtS() << endl;
