@@ -70,14 +70,14 @@ void MainMenu() {
 				debt2 = debts.GetDebtS();
 			}
 
-			if (cur.Compare(due_date_2) > 0) {
+			if (cur.Compare(due_date_2) >= 0) {
 				cout << "RESULT" << endl << endl;
 				cout << "Total 1st debt is: " << f[index].GetDebts().GetTotalDebtD() << endl;
 				cout << "Total 2nd debt is: " << f[index].GetDebts().GetTotalDebtS() << endl;
 				cout << "Total debts you have: " << f[index].GetDebts().GetTotalDebtD() + f[index].GetDebts().GetTotalDebtS() << endl;
 
 				cout << endl << "On " << due_date_1.GetMonth() << "/" << due_date_1.GetYear() << endl;
-				int index1 = Date::MonthDiff(due_date_1, START);
+				int index1 = Date::MonthDiff(due_date_1, START) - 1;
 				cout << "Total money you have in all savings books: " << f[index1].GetAccount().GetTotalBalance(due_date_1) << endl;
 				cout << "Total balance in family account: " << f[index1].GetFamilyAccount() << endl;
 				double total1 = f[index1].GetAccount().GetTotalBalance(due_date_1) + f[index1].GetFamilyAccount();
@@ -91,7 +91,7 @@ void MainMenu() {
 				}
 
 				cout << endl << "On " << due_date_2.GetMonth() << "/" << due_date_2.GetYear() << endl;
-				int index2 = Date::MonthDiff(due_date_2, START);
+				int index2 = Date::MonthDiff(due_date_2, START) - 1;
 				cout << "Total money you have in all savings books: " << f[index2].GetAccount().GetTotalBalance(due_date_2) << endl;
 				cout << "Total balance in family account: " << f[index2].GetFamilyAccount() << endl;
 				double total2 = f[index2].GetAccount().GetTotalBalance(due_date_2) + f[index2].GetFamilyAccount();
